@@ -29,7 +29,7 @@
             position: relative;
         }
         
-        /* POLKA DOT GRID - BASE LAYER (ALWAYS VISIBLE) */
+        /* BASE GRID: Always visible, opacity 0.15, moves infinitely */
         .bg-dots {
             position: absolute;
             top: 0;
@@ -44,7 +44,7 @@
             animation: dotMove 20s linear infinite;
         }
         
-        /* INDIVIDUAL DOT TWINKLE EFFECT - SAME GRID */
+        /* STARS LAYER: Default OFF (opacity:0, animation:none) */
         .bg-dots::before {
             content: '';
             position: absolute;
@@ -56,38 +56,33 @@
             background-image: radial-gradient(circle, #fff 1px, transparent 1px);
             background-size: 30px 30px;
             background-position: 0 0;
-            animation: dotMove 20s linear infinite, starTwinkle 4s ease-in-out infinite;
+            animation: none;
             transition: opacity 0.3s ease;
         }
         
-        /* ACTIVATE TWINKLE ONLY IN STARS MODE */
-        body:not(.stars-disabled) .bg-dots::before {
+        /* STARS ACTIVATION: Only via body.enable-stars class */
+        body.enable-stars .bg-dots::before {
             opacity: 1;
+            animation: dotMove 20s linear infinite, starTwinkle 4s ease-in-out infinite;
         }
         
-        /* REMOVE ALL COMPLEX LOGIC - BACK TO BASICS */
-        
-        /* FIXED: Add the missing dotMove animation */
+        /* GRID ANIMATIONS */
         @keyframes dotMove {
             0% { transform: translate(0, 0); }
             100% { transform: translate(30px, 30px); }
         }
         
-        /* CRITICAL FIX: Sync twinkle layer with base grid movement */
-        @keyframes dotMoveTwinkle {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, 30px); }
-        }
+        /* UNUSED - can be removed */
         
+        /* STARS BRIGHTNESS: 50% brighter than original */
         @keyframes starTwinkle {
-            0% { opacity: 0.2; }
-            25% { opacity: 0.8; }
-            50% { opacity: 0.1; }
-            75% { opacity: 0.9; }
-            100% { opacity: 0.3; }
+            0% { opacity: 0.3; }
+            25% { opacity: 1.0; }
+            50% { opacity: 0.15; }
+            75% { opacity: 1.0; }
+            100% { opacity: 0.45; }
         }
         
-        /* GRID ALWAYS VISIBLE - NO HIDING */
         
         /* STICKY HEADER */
         .header {
@@ -747,38 +742,39 @@
             .enterprise-trail { opacity: 0.3; width: 1px; height: 60px; }
         }
         
-        /* SUPERMAN TRAILS */
+        /* TRAILS: Default HIDDEN (display:none), no animation */
         .enterprise-trail {
             position: fixed;
             width: 2px;
             height: 100px;
-            opacity: 0;
-            animation: trailFall 8s linear infinite;
+            display: none;
             filter: drop-shadow(0 0 15px rgba(96,165,250,0.4)) blur(0.8px);
             z-index: 1;
         }
         
-        .trails-disabled .enterprise-trail {
-            display: none !important;
+        /* TRAILS ACTIVATION: Only via body.enable-trails class */
+        body.enable-trails .enterprise-trail {
+            display: block;
+            animation: trailFall 8s linear infinite;
         }
 
-        /* 4 verschiedene Farbverläufe */
+        /* TRAIL COLORS: 4 gradient variants */
         .trail-superman-blue { background: linear-gradient(0deg, transparent, #60A5FA, #FF6B35, transparent); }
         .trail-superman-red { background: linear-gradient(0deg, transparent, #FF6B35, #60A5FA, transparent); }
         .trail-superman-gold { background: linear-gradient(0deg, transparent, #FBBF24, #60A5FA, transparent); }
         .trail-superman-white { background: linear-gradient(0deg, transparent, #FFFFFF, #60A5FA, transparent); }
 
-        /* Positionierung & Timing */
-        .enterprise-trail:nth-child(1) { left: 15%; animation-delay: 0s; }
-        .enterprise-trail:nth-child(2) { left: 35%; animation-delay: 2s; }
-        .enterprise-trail:nth-child(3) { left: 65%; animation-delay: 4s; }
-        .enterprise-trail:nth-child(4) { left: 85%; animation-delay: 6s; }
+        /* TRAIL DELAYS: Staggered 0s,2s,4s,6s - High specificity to override base */
+        body.enable-trails .enterprise-trail:nth-child(1) { left: 15%; animation-delay: 0s; }
+        body.enable-trails .enterprise-trail:nth-child(2) { left: 35%; animation-delay: 2s; }
+        body.enable-trails .enterprise-trail:nth-child(3) { left: 65%; animation-delay: 4s; }
+        body.enable-trails .enterprise-trail:nth-child(4) { left: 85%; animation-delay: 6s; }
 
-        /* Animation mit variabler Blur */
+        /* TRAIL ANIMATION: Spawn -100vh (outside viewport), fall to +100vh */
         @keyframes trailFall {
             0% { 
                 opacity: 0; 
-                transform: translateY(-120px); 
+                transform: translateY(-100vh); 
                 filter: drop-shadow(0 0 15px rgba(96,165,250,0.4)) blur(1.2px);
             }
             25% {
@@ -1046,7 +1042,12 @@
             });
         }
         
-        // 3-STATE ANIMATION TOGGLE WITH CLICK ZONES
+        /* 3-STATE TOGGLE SYSTEM:
+         * LEFT (✨): enable-stars class → stars animation
+         * MIDDLE (○): no classes → base grid only  
+         * RIGHT (⚡): enable-trails class → superman trails
+         * CRITICAL: Never modify this logic - causes animation conflicts
+         */
         let animationState = 'neutral'; // 'neutral', 'stars', 'trails'
         
         function setAnimationState(newState) {
@@ -1054,22 +1055,24 @@
             const toggle = document.getElementById('animationToggle');
             const sliderIcon = document.getElementById('sliderIcon');
             
-            // Remove all states
-            body.classList.remove('stars-disabled', 'trails-disabled');
+            // ATOMIC STATE: Clear all, then add only what's needed
+            body.classList.remove('enable-stars', 'enable-trails');
             toggle.classList.remove('stars', 'neutral', 'trails');
             
             animationState = newState;
             
             if (animationState === 'stars') {
-                body.classList.add('trails-disabled');
+                // LEFT: Stars twinkling (50% brighter)
+                body.classList.add('enable-stars');
                 toggle.classList.add('stars');
                 sliderIcon.textContent = '✨';
             } else if (animationState === 'trails') {
-                body.classList.add('stars-disabled');
+                // RIGHT: Superman trails (staggered delays, spawn -100vh)
+                body.classList.add('enable-trails');
                 toggle.classList.add('trails');
                 sliderIcon.textContent = '⚡';
             } else {
-                body.classList.add('stars-disabled', 'trails-disabled');
+                // MIDDLE: Base grid only (no effects)
                 toggle.classList.add('neutral');
                 sliderIcon.textContent = '○';
             }
