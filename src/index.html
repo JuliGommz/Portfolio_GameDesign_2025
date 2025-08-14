@@ -15,6 +15,25 @@
             --color-text-dim: #888888;
             --color-accent: #4C63D2;
             --color-energy: #FF6B35;
+            
+            /* PIXEL-PERFECT LAYOUT VARIABLES */
+            --header-padding: clamp(0.4rem, 0.75vw, 0.6rem);
+            --footer-padding: clamp(0.4rem, 0.75vw, 0.6rem);
+            --header-content-height: 1.2rem;
+            --footer-content-height: 1.2rem;
+            --border-width: 1px;
+            
+            /* CALCULATED HEIGHTS */
+            --header-total-height: calc(var(--header-padding) * 2 + var(--header-content-height) + var(--border-width));
+            --footer-total-height: calc(var(--footer-padding) * 2 + var(--footer-content-height) + var(--border-width));
+            --combined-header-footer-height: calc(var(--header-total-height) + var(--footer-total-height));
+            
+            /* MOBILE OVERRIDES */
+            --mobile-header-padding: clamp(0.5rem, 2vw, 1rem);
+            --mobile-footer-padding: clamp(0.5rem, 2vw, 1rem);
+            --mobile-header-total-height: calc(var(--mobile-header-padding) * 2 + var(--header-content-height) + var(--border-width));
+            --mobile-footer-total-height: calc(var(--mobile-footer-padding) * 2 + var(--footer-content-height) + var(--border-width));
+            --mobile-combined-header-footer-height: calc(var(--mobile-header-total-height) + var(--mobile-footer-total-height));
         }
         
         /* FONT SYSTEM - UPGRADED SERIF */
@@ -27,6 +46,18 @@
             color: var(--color-text);
             overflow-x: hidden;
             position: relative;
+            
+            /* CRITICAL: Remove all browser defaults that create gaps */
+            margin: 0;
+            padding: 0;
+            border: 0;
+            
+            /* PRECISION: Ensure consistent box model */
+            box-sizing: border-box;
+            
+            /* VIEWPORT: Ensure full height usage */
+            min-height: 100vh;
+            height: 100vh;
         }
         
         /* BASE GRID: Always visible, opacity 0.15, moves infinitely */
@@ -94,19 +125,30 @@
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(76, 99, 210, 0.25);
-            padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 2rem);
+            padding: clamp(0.4rem, 0.75vw, 0.6rem) clamp(1rem, 2vw, 2rem);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 1rem;
         }
 
-        /* MAIN CONTENT AREA - ASYMMETRICAL POSITIONING */
+        /* MAIN CONTENT AREA - PIXEL-PERFECT FIT */
         .container {
-            min-height: calc(100vh - 160px);
+            /* EXACT HEIGHT CALCULATION using CSS custom properties */
+            min-height: calc(100vh - var(--combined-header-footer-height));
+            max-height: calc(100vh - var(--combined-header-footer-height));
+            
             position: relative;
-            padding: clamp(0.5rem, 1.5vw, 1.5rem);
-            padding-top: 120px;
-            padding-bottom: 100px;
+            
+            /* ZERO GAPS - Remove all padding that creates spaces */
+            padding: 0 clamp(0.5rem, 1.5vw, 1.5rem);
+            margin: 0;
+            
+            /* EXACT TOP POSITIONING - Account for fixed header */
+            padding-top: var(--header-total-height);
+            
+            /* EXACT BOTTOM POSITIONING - Account for fixed footer */  
+            padding-bottom: var(--footer-total-height);
+            
             display: grid;
             grid-template-areas: 
                 "project-top-left . project-top-right"
@@ -117,6 +159,10 @@
             grid-template-columns: 23vw 1fr 27vw;
             gap: clamp(1.5rem, 2.5vw, 3rem);
             z-index: 2;
+            
+            /* PRECISE OVERFLOW CONTROL */
+            overflow-y: auto;
+            box-sizing: border-box;
         }
 
         /* STICKY FOOTER */
@@ -129,7 +175,7 @@
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             border-top: 1px solid rgba(76, 99, 210, 0.25);
-            padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 2rem);
+            padding: clamp(0.4rem, 0.75vw, 0.6rem) clamp(1rem, 2vw, 2rem);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 1rem;
@@ -166,7 +212,7 @@
             align-self: center;
             justify-self: center;
             position: relative;
-            top: -20px; 
+            top: clamp(-10px, -1vh, -5px); /* Reduced from -20px */
         }
         
         .center-title h1 {
@@ -220,45 +266,45 @@
             transform: translateY(0) scale(1);
         }
         
-        /* ASYMMETRICAL POSITIONING ADJUSTMENTS */
+        /* ASYMMETRICAL POSITIONING ADJUSTMENTS - CONSTRAINED TO 5% SPACING */
         .project-top-left { 
             grid-area: project-top-left; 
             animation-delay: 0.1s;
             transform-origin: bottom right;
-            margin-left: 300px;
+            margin-left: clamp(20px, 12vw, 120px); /* Reduced from 300px */
             position: relative;
-            top: 60px;
+            top: clamp(10px, 2vh, 25px); /* Reduced from 60px */
         }
         .project-top-right { 
             grid-area: project-top-right; 
             animation-delay: 0.2s;
             transform-origin: bottom left;
-            margin-right: 155px;
+            margin-right: clamp(15px, 8vw, 80px); /* Reduced from 155px */
             position: relative;
-            top: 55px;
+            top: clamp(8px, 1.8vh, 22px); /* Reduced from 55px */
         }
         .project-middle-left { 
             grid-area: project-middle-left; 
             animation-delay: 0.3s;
             transform-origin: top right;
-            margin-left: 25px;
+            margin-left: clamp(10px, 2vw, 25px); /* Kept similar */
             position: relative;
-            top: -30px; 
+            top: clamp(-15px, -1.5vh, -10px); /* Reduced from -30px */
         }
         .project-bottom-right { 
             grid-area: project-bottom-right; 
             animation-delay: 0.4s;
             transform-origin: top left;
-            margin-right: -8px;
+            margin-right: clamp(-5px, -0.5vw, 0px); /* Kept similar */
             position: relative;
-            top: -20px; 
+            top: clamp(-10px, -1vh, -8px); /* Reduced from -20px */
         }
         .project-bottom-center { 
             grid-area: project-bottom-center; 
             animation-delay: 0.5s;
             transform-origin: top center;
             position: relative;
-            top: -130px; 
+            top: clamp(-40px, -4vh, -25px); /* Greatly reduced from -130px */
         }
         
         .project-image {
@@ -527,12 +573,31 @@
             font-family: 'Inter', sans-serif;
             color: var(--color-accent);
             font-weight: 500;
+            font-size: 0.7em; /* 30% smaller than inherited size */
+            line-height: 1.1; /* Tighter line height */
         }
         
         .coordinates {
-            font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+            font-size: clamp(0.49rem, 0.77vw, 0.595rem); /* 30% smaller: 0.7*0.7, 1.1*0.7, 0.85*0.7 */
             color: var(--color-text-dim);
             font-family: 'Inter', sans-serif;
+            line-height: 1.1; /* Tighter line height */
+        }
+        
+        /* TIME SECTION CONTAINER - VERTICAL STACK WITH TIGHT SPACING */
+        .footer-center .time-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15em; /* 50% reduced spacing between all elements */
+            line-height: 1.1;
+        }
+        
+        .footer-center .time-container h4,
+        .footer-center .time-container .live-time,
+        .footer-center .time-container .coordinates {
+            margin: 0; /* Override all margins to use flexbox gap instead */
+            padding: 0;
         }
         
         /* CLICKABLE LINKS - COMPACT */
@@ -586,6 +651,7 @@
         .cursor-box.active {
             opacity: 1;
         }
+        
         
         /* 3-STATE ANIMATION TOGGLE */
         .animation-toggle {
@@ -703,7 +769,7 @@
         
         .modal-close:hover { color: var(--color-accent); }
         
-        /* MOBILE RESPONSIVE - ADJUSTED */
+        /* MOBILE RESPONSIVE - PIXEL-PERFECT */
         @media (max-width: 768px) {
             .header, .footer {
                 grid-template-columns: 1fr 1fr;
@@ -711,6 +777,18 @@
             }
             
             .container {
+                /* MOBILE EXACT HEIGHT CALCULATION using CSS custom properties */
+                min-height: calc(100vh - var(--mobile-combined-header-footer-height));
+                max-height: calc(100vh - var(--mobile-combined-header-footer-height));
+                
+                /* ZERO GAPS - Mobile specific */
+                padding: 0 0.5rem;
+                margin: 0;
+                
+                /* EXACT MOBILE POSITIONING */
+                padding-top: var(--mobile-header-total-height);
+                padding-bottom: var(--mobile-footer-total-height);
+                
                 grid-template-areas: 
                     "project-top-left project-top-right"
                     "center-title center-title"
@@ -718,10 +796,11 @@
                     "project-bottom-center project-bottom-center";
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: auto auto auto auto;
-                padding: 1rem 0.5rem;
-                padding-top: 100px;
-                padding-bottom: 90px;
                 gap: clamp(1.2rem, 3vw, 2rem);
+                
+                /* MOBILE OVERFLOW CONTROL */
+                overflow-y: auto;
+                box-sizing: border-box;
             }
             
             .project-card {
@@ -939,16 +1018,18 @@
         
         <div class="footer-item footer-center">
             <!-- ANIMATION TOGGLE -->
-            <div class="animation-toggle neutral" id="animationToggle" title="Animation Control" style="margin: 0 auto 0.3rem auto;">
+            <div class="animation-toggle neutral" id="animationToggle" title="Animation Control" style="margin: 0 auto 0.15rem auto;">
                 <span class="toggle-icon left">✨</span>
                 <div class="toggle-slider">
                     <span id="sliderIcon">○</span>
                 </div>
                 <span class="toggle-icon right">⚡</span>
             </div>
-            <h4 class="sans-font">Time</h4>
-            <span class="live-time serif-font" id="liveTime">--:--:--</span><br>
-            <span class="coordinates">Heidelberg/Leipzig</span>
+            <div class="time-container">
+                <h4 class="sans-font">Time</h4>
+                <span class="live-time serif-font" id="liveTime">--:--:--</span>
+                <span class="coordinates serif-font">Heidelberg/Leipzig</span>
+            </div>
         </div>
         
         <div class="footer-item footer-right">

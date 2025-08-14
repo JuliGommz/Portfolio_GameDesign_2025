@@ -21,6 +21,11 @@
 
 ### Quick Start
 ```bash
+# Portfolio is automatically accessible in Claude Code via:
+# 1. Memory Bank: C:\Users\Teilnehmer\memory-bank (local token-efficient access)
+# 2. This CLAUDE.md: Project-specific context and commands
+# 3. Git repository: Cross-computer synchronization
+
 cd C:\J.Gomez\Projects-Repository\School\Portfolio
 # Open src/index.html in browser
 # No build process required - pure HTML/CSS/JS
