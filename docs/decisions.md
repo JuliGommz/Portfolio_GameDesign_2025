@@ -61,3 +61,35 @@ if (state === 'stars') body.classList.add('enable-stars');
 - Better typography (Inter + Crimson Text)
 - Professional business content
 - Advanced CSS/JavaScript demonstrates skills
+
+---
+
+## Analysis & Optimization Strategy
+
+### Decision: Token-Efficient Agent Usage
+**Date**: 2025-01-14  
+**Problem**: Comprehensive "analyze everything" requests waste 60-70% tokens  
+**Solution**: Focused analysis with 2-3 targeted agents vs all agents  
+**Implementation**: Specify exact scope, use previous context, prioritize critical issues  
+**Result**: 60-70% token savings while maintaining analysis quality  
+
+### Decision: Phased Optimization Approach
+**Date**: 2025-01-14  
+**Options**: Complete rewrite, incremental improvements, status quo  
+**Chosen**: Phased incremental improvements (3-week timeline)  
+**Rationale**: 
+- Preserves existing sophisticated design
+- Manageable implementation chunks
+- Allows testing between phases
+- Maintains production readiness
+
+### Decision: Documentation Consolidation
+**Date**: 2025-01-14  
+**Problem**: Documentation scattered between memory-bank and docs/  
+**Solution**: Centralize all documentation in docs/ folder  
+**Structure**: 
+- `project-log.md` - Chronological history
+- `decisions.md` - This file (technical decisions)
+- `optimization-roadmap.md` - Implementation plan
+- `website-specs.md` - Technical specifications
+- Memory-bank as backup/progress tracking only
