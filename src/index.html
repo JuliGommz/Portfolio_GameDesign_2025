@@ -131,24 +131,24 @@
             gap: 1rem;
         }
 
-        /* MAIN CONTENT AREA - PIXEL-PERFECT FIT */
+        /* V-RULE IMPLEMENTATION: ABSOLUTE POSITIONING FOR ZERO OVERLAP */
         .container {
-            /* EXACT HEIGHT CALCULATION using CSS custom properties */
-            min-height: calc(100vh - var(--combined-header-footer-height));
-            max-height: calc(100vh - var(--combined-header-footer-height));
+            /* CRITICAL V-RULE: Position-based instead of padding-based */
+            position: absolute;
+            top: var(--header-total-height);
+            bottom: var(--footer-total-height);
+            left: 0;
+            right: 0;
             
-            position: relative;
+            /* MATHEMATICAL PRECISION: Height is automatically calculated by top/bottom */
+            height: auto;
+            width: auto;
             
-            /* ZERO GAPS - Remove all padding that creates spaces */
+            /* CONTENT PADDING: Only horizontal padding, no vertical overlap risk */
             padding: 0 clamp(0.5rem, 1.5vw, 1.5rem);
             margin: 0;
             
-            /* EXACT TOP POSITIONING - Account for fixed header */
-            padding-top: var(--header-total-height);
-            
-            /* EXACT BOTTOM POSITIONING - Account for fixed footer */  
-            padding-bottom: var(--footer-total-height);
-            
+            /* GRID SYSTEM: Preserved asymmetrical layout */
             display: grid;
             grid-template-areas: 
                 "project-top-left . project-top-right"
@@ -777,18 +777,22 @@
             }
             
             .container {
-                /* MOBILE EXACT HEIGHT CALCULATION using CSS custom properties */
-                min-height: calc(100vh - var(--mobile-combined-header-footer-height));
-                max-height: calc(100vh - var(--mobile-combined-header-footer-height));
+                /* V-RULE MOBILE: Same absolute positioning approach */
+                position: absolute;
+                top: var(--mobile-header-total-height);
+                bottom: var(--mobile-footer-total-height);
+                left: 0;
+                right: 0;
                 
-                /* ZERO GAPS - Mobile specific */
+                /* MATHEMATICAL PRECISION: Height calculated automatically */
+                height: auto;
+                width: auto;
+                
+                /* MOBILE CONTENT PADDING: Only horizontal, no overlap risk */
                 padding: 0 0.5rem;
                 margin: 0;
                 
-                /* EXACT MOBILE POSITIONING */
-                padding-top: var(--mobile-header-total-height);
-                padding-bottom: var(--mobile-footer-total-height);
-                
+                /* MOBILE GRID LAYOUT */
                 grid-template-areas: 
                     "project-top-left project-top-right"
                     "center-title center-title"
