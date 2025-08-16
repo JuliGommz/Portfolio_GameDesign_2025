@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-RULE Verification Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --color-bg: #0a0a0a;
+            --color-card: #111111;
+            --color-text: #ffffff;
+            --color-text-dim: #888888;
+            --color-accent: #4C63D2;
+            --color-energy: #FF6B35;
+            
+            /* PIXEL-PERFECT LAYOUT VARIABLES */
+            --header-padding: clamp(0.4rem, 0.75vw, 0.6rem);
+            --footer-padding: clamp(0.4rem, 0.75vw, 0.6rem);
+            --header-content-height: 1.2rem;
+            --footer-content-height: 1.2rem;
+            --border-width: 1px;
+            
+            /* CALCULATED HEIGHTS */
+            --header-total-height: calc(var(--header-padding) * 2 + var(--header-content-height) + var(--border-width));
+            --footer-total-height: calc(var(--footer-padding) * 2 + var(--footer-content-height) + var(--border-width));
+            --combined-header-footer-height: calc(var(--header-total-height) + var(--footer-total-height));
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            height: 100vh;
+        }
+        
+        /* TEST HEADER */
+        .test-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 0, 0, 0.3);
+            border: 2px solid #ff0000;
+            padding: clamp(0.4rem, 0.75vw, 0.6rem) 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            line-height: 1.2rem;
+        }
+        
+        /* TEST FOOTER */
+        .test-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 255, 0.3);
+            border: 2px solid #0000ff;
+            padding: clamp(0.4rem, 0.75vw, 0.6rem) 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            line-height: 1.2rem;
+        }
+        
+        /* V-RULE CONTAINER TEST */
+        .test-container {
+            position: absolute;
+            top: var(--header-total-height);
+            bottom: var(--footer-total-height);
+            left: 0;
+            right: 0;
+            
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            
+            padding: 1rem;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            
+            overflow-y: auto;
+        }
+        
+        .test-info {
+            background: var(--color-card);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .measurement-display {
+            background: rgba(76, 99, 210, 0.1);
+            border: 1px solid var(--color-accent);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        
+        .success { color: #00ff00; }
+        .warning { color: #ffaa00; }
+        .error { color: #ff0000; }
+    </style>
+</head>
+<body>
+    <!-- RED HEADER: Should be exactly at top edge -->
+    <div class="test-header">
+        🔴 HEADER ZONE - Should align with viewport top edge
+    </div>
+    
+    <!-- GREEN CONTAINER: Should fit exactly between header and footer -->
+    <div class="test-container">
+        <div class="test-info">
+            <h2 style="color: var(--color-accent); margin-bottom: 1rem;">V-RULE VERIFICATION TEST</h2>
+            <p style="margin-bottom: 1rem;">This container should fit EXACTLY between header and footer with ZERO overlap.</p>
+            
+            <div class="measurement-display">
+                <strong>Mathematical Verification:</strong><br>
+                Header Height: <span id="headerHeight">calculating...</span><br>
+                Footer Height: <span id="footerHeight">calculating...</span><br>
+                Container Height: <span id="containerHeight">calculating...</span><br>
+                Expected Container: <span id="expectedHeight">calculating...</span><br>
+                <br>
+                <strong>Precision Check:</strong> <span id="precisionResult">verifying...</span>
+            </div>
+        </div>
+        
+        <div class="test-info">
+            <p>🔍 <strong>Visual Inspection:</strong></p>
+            <p>• Green container should NOT extend under red header</p>
+            <p>• Green container should NOT extend under blue footer</p>
+            <p>• Green container should fill entire middle space</p>
+        </div>
+        
+        <div class="test-info">
+            <p>📏 <strong>Viewport Testing:</strong></p>
+            <p>Resize browser window to test responsive precision</p>
+            <p>All measurements should remain mathematically exact</p>
+        </div>
+    </div>
+    
+    <!-- BLUE FOOTER: Should be exactly at bottom edge -->
+    <div class="test-footer">
+        🔵 FOOTER ZONE - Should align with viewport bottom edge
+    </div>
+    
+    <script>
+        function measureElements() {
+            const header = document.querySelector('.test-header');
+            const footer = document.querySelector('.test-footer');
+            const container = document.querySelector('.test-container');
+            
+            const headerHeight = header.offsetHeight;
+            const footerHeight = footer.offsetHeight;
+            const containerHeight = container.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const expectedContainerHeight = viewportHeight - headerHeight - footerHeight;
+            
+            document.getElementById('headerHeight').textContent = headerHeight + 'px';
+            document.getElementById('footerHeight').textContent = footerHeight + 'px';
+            document.getElementById('containerHeight').textContent = containerHeight + 'px';
+            document.getElementById('expectedHeight').textContent = expectedContainerHeight + 'px';
+            
+            const precision = Math.abs(containerHeight - expectedContainerHeight);
+            const precisionResult = document.getElementById('precisionResult');
+            
+            if (precision <= 1) {
+                precisionResult.textContent = '✅ PERFECT (≤1px difference)';
+                precisionResult.className = 'success';
+            } else if (precision <= 3) {
+                precisionResult.textContent = '⚠️ ACCEPTABLE (' + precision + 'px difference)';
+                precisionResult.className = 'warning';
+            } else {
+                precisionResult.textContent = '❌ FAILED (' + precision + 'px difference)';
+                precisionResult.className = 'error';
+            }
+        }
+        
+        // Initial measurement
+        setTimeout(measureElements, 100);
+        
+        // Re-measure on window resize
+        window.addEventListener('resize', measureElements);
+        
+        // Re-measure periodically for dynamic content
+        setInterval(measureElements, 2000);
+    </script>
+</body>
+</html>

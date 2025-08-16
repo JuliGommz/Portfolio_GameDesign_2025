@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 JULIAN'S PORTFOLIO WORKSPACE</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .workspace-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(76, 99, 210, 0.1);
+            border: 2px solid #4C63D2;
+            border-radius: 16px;
+        }
+        
+        .workspace-header h1 {
+            font-size: 2.5rem;
+            color: #4C63D2;
+            margin-bottom: 0.5rem;
+        }
+        
+        .workspace-header p {
+            font-size: 1.1rem;
+            color: #888;
+        }
+        
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .file-card {
+            background: rgba(17, 17, 17, 0.8);
+            border: 1px solid rgba(76, 99, 210, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-card:hover {
+            transform: translateY(-5px);
+            border-color: #4C63D2;
+            box-shadow: 0 10px 30px rgba(76, 99, 210, 0.2);
+        }
+        
+        .file-card.primary {
+            border: 2px solid #FF6B35;
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .file-card.primary:hover {
+            border-color: #FF6B35;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+        
+        .file-card h3 {
+            color: #4C63D2;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .file-card.primary h3 {
+            color: #FF6B35;
+        }
+        
+        .file-card .file-purpose {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .file-card .file-description {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .status-primary {
+            background: #FF6B35;
+            color: white;
+        }
+        
+        .status-active {
+            background: #4C63D2;
+            color: white;
+        }
+        
+        .status-backup {
+            background: #888;
+            color: white;
+        }
+        
+        .instructions {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid #FF6B35;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .instructions h2 {
+            color: #FF6B35;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions ul {
+            color: #ddd;
+            padding-left: 1.5rem;
+        }
+        
+        .instructions li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        /* ADHD FOCUS INDICATORS */
+        .focus-indicator {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(76, 99, 210, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .focus-indicator.active {
+            background: rgba(255, 107, 53, 0.9);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* KEYBOARD SHORTCUTS PANEL */
+        .shortcuts-panel {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(17, 17, 17, 0.95);
+            border: 1px solid #4C63D2;
+            border-radius: 8px;
+            padding: 1rem;
+            max-width: 200px;
+            font-size: 0.8rem;
+            z-index: 999;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .shortcuts-panel:hover {
+            opacity: 1;
+        }
+        
+        .shortcuts-panel h4 {
+            color: #4C63D2;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            color: #ddd;
+        }
+        
+        .shortcut-key {
+            background: #4C63D2;
+            color: white;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+        
+        /* PROGRESS INDICATOR */
+        .session-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #FF6B35;
+            z-index: 1001;
+            transition: width 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- ADHD FOCUS AND PROGRESS INDICATORS -->
+    <div class="session-progress" id="sessionProgress"></div>
+    <div class="focus-indicator" id="focusIndicator">🧠 Ready to Focus</div>
+    
+    <!-- KEYBOARD SHORTCUTS PANEL -->
+    <div class="shortcuts-panel">
+        <h4>⌨️ Quick Keys</h4>
+        <div class="shortcut-item">
+            <span>Main File</span>
+            <span class="shortcut-key">1</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Modular</span>
+            <span class="shortcut-key">2</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Reset Session</span>
+            <span class="shortcut-key">R</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Toggle Focus</span>
+            <span class="shortcut-key">F</span>
+        </div>
+        <div class="shortcut-item">
+            <span>Clear Alerts</span>
+            <span class="shortcut-key">ESC</span>
+        </div>
+    </div>
+
+    <div class="workspace-header">
+        <h1>🎯 MAIN WORKSPACE</h1>
+        <p>Julian's ADHD-Optimized Portfolio Development Environment</p>
+    </div>
+    
+    <div class="file-grid">
+        <div class="file-card primary" onclick="window.open('portfolio-main.html', '_blank')">
+            <h3>📁 portfolio-main.html</h3>
+            <div class="file-purpose">PRIMARY WORKING FILE</div>
+            <div class="file-description">
+                Complete portfolio with inline CSS and JavaScript. 
+                Use this for quick edits, live testing, and primary development work.
+                Self-contained - no external dependencies.
+            </div>
+            <span class="status-badge status-primary">START HERE</span>
+        </div>
+        
+        <div class="file-card" onclick="window.open('portfolio-modular.html', '_blank')">
+            <h3>📁 portfolio-modular.html</h3>
+            <div class="file-purpose">MODULAR VERSION</div>
+            <div class="file-description">
+                Clean HTML structure with external CSS/JS files.
+                Use for organized development when working on larger features.
+                Requires styles.css and app.js to function.
+            </div>
+            <span class="status-badge status-active">MODULAR</span>
+        </div>
+        
+        <div class="file-card" onclick="alert('CSS file - edit with your preferred code editor')">
+            <h3>🎨 styles.css</h3>
+            <div class="file-purpose">EXTERNAL STYLES</div>
+            <div class="file-description">
+                CSS styles for the modular version. 
+                Edit this when working with portfolio-modular.html.
+                Contains all visual styling and animations.
+            </div>
+            <span class="status-badge status-active">STYLING</span>
+        </div>
+        
+        <div class="file-card" onclick="alert('JavaScript file - edit with your preferred code editor')">
+            <h3>⚡ app.js</h3>
+            <div class="file-purpose">MAIN JAVASCRIPT</div>
+            <div class="file-description">
+                Core application logic for the modular version.
+                Handles animations, interactions, and project modal system.
+                Entry point for all JavaScript functionality.
+            </div>
+            <span class="status-badge status-active">LOGIC</span>
+        </div>
+        
+        <div class="file-card" onclick="alert('Animation system - edit with your preferred code editor')">
+            <h3>🌟 animation-system.js</h3>
+            <div class="file-purpose">ANIMATION ENGINE</div>
+            <div class="file-description">
+                Handles background animations, trails, and visual effects.
+                Contains the 3-state animation toggle system.
+                Modular animation components.
+            </div>
+            <span class="status-badge status-active">EFFECTS</span>
+        </div>
+        
+        <div class="file-card" onclick="alert('UI components - edit with your preferred code editor')">
+            <h3>🔧 ui-components.js</h3>
+            <div class="file-purpose">UI COMPONENTS</div>
+            <div class="file-description">
+                Reusable UI components and interaction handlers.
+                Modal system, cursor effects, and component logic.
+                Building blocks for interface elements.
+            </div>
+            <span class="status-badge status-active">COMPONENTS</span>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <h2>🧠 ADHD-OPTIMIZED WORKFLOW</h2>
+        
+        <div style="background: rgba(255, 107, 53, 0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #FF6B35;">
+            <h3 style="color: #FF6B35; margin-bottom: 0.5rem; font-size: 1.1rem;">🎯 IMMEDIATE ACTION (Zero Decision Fatigue)</h3>
+            <p style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">
+                Press <kbd style="background: #FF6B35; color: white; padding: 0.25rem 0.5rem; border-radius: 4px;">1</kbd> 
+                or click the orange card above → Start working immediately
+            </p>
+            <p style="color: #ddd; font-size: 0.9rem;">
+                portfolio-main.html = Complete, self-contained work file with everything included
+            </p>
+        </div>
+        
+        <div style="background: rgba(76, 99, 210, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #4C63D2;">
+            <h3 style="color: #4C63D2; margin-bottom: 0.5rem; font-size: 1rem;">🔧 ADVANCED WORKFLOW (When Needed)</h3>
+            <ul style="margin: 0; color: #ddd;">
+                <li><strong>Modular Development:</strong> Press <kbd style="background: #4C63D2; color: white; padding: 0.2rem 0.4rem; border-radius: 3px;">2</kbd> for organized file structure</li>
+                <li><strong>Session Management:</strong> Press <kbd style="background: #4C63D2; color: white; padding: 0.2rem 0.4rem; border-radius: 3px;">R</kbd> to reset timer, <kbd style="background: #4C63D2; color: white; padding: 0.2rem 0.4rem; border-radius: 3px;">F</kbd> to toggle reminders</li>
+                <li><strong>Focus Control:</strong> Press <kbd style="background: #4C63D2; color: white; padding: 0.2rem 0.4rem; border-radius: 3px;">ESC</kbd> to clear all notifications</li>
+            </ul>
+        </div>
+        
+        <div style="background: rgba(136, 136, 136, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid #888;">
+            <h3 style="color: #888; margin-bottom: 0.5rem; font-size: 0.95rem;">✅ SAFETY FEATURES</h3>
+            <ul style="margin: 0; color: #aaa; font-size: 0.9rem;">
+                <li>Single-file focus prevents context switching chaos</li>
+                <li>25-minute timer with automatic break reminders</li>
+                <li>Visual progress tracking reduces time anxiety</li>
+                <li>All originals safely backed up in 02-ARCHIVE folder</li>
+                <li>No setup required - immediate productive work</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // ADHD SESSION MANAGEMENT SYSTEM
+        let sessionStartTime = Date.now();
+        let focusReminders = true;
+        let breakReminder = false;
+        
+        // Enhanced time awareness for ADHD with visual indicators
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('de-DE', {
+                timeZone: 'Europe/Berlin',
+                hour12: false
+            });
+            
+            // Calculate work session duration
+            const sessionDuration = Math.floor((now - sessionStartTime) / 60000); // minutes
+            const sessionText = sessionDuration > 0 ? ` | Session: ${sessionDuration}min` : '';
+            
+            // Update visual progress indicator (25min = 100%)
+            const progressPercent = Math.min((sessionDuration / 25) * 100, 100);
+            const progressBar = document.getElementById('sessionProgress');
+            if (progressBar) {
+                progressBar.style.width = `${progressPercent}%`;
+                if (progressPercent >= 100) {
+                    progressBar.style.background = '#FF6B35';
+                } else if (progressPercent >= 80) {
+                    progressBar.style.background = '#FFB935';
+                } else {
+                    progressBar.style.background = '#4C63D2';
+                }
+            }
+            
+            // Update focus indicator
+            const focusIndicator = document.getElementById('focusIndicator');
+            if (focusIndicator) {
+                if (sessionDuration >= 25) {
+                    focusIndicator.textContent = '🚨 Break Time!';
+                    focusIndicator.classList.add('active');
+                } else if (sessionDuration >= 20) {
+                    focusIndicator.textContent = '⚡ Deep Focus Zone';
+                    focusIndicator.classList.remove('active');
+                } else if (sessionDuration >= 10) {
+                    focusIndicator.textContent = '🎯 Focused Working';
+                    focusIndicator.classList.remove('active');
+                } else {
+                    focusIndicator.textContent = '🧠 Ready to Focus';
+                    focusIndicator.classList.remove('active');
+                }
+            }
+            
+            // ADHD break reminder logic
+            if (sessionDuration > 25 && !breakReminder) {
+                showBreakReminder();
+                breakReminder = true;
+            }
+            
+            document.querySelector('.workspace-header p').innerHTML = 
+                `Julian's ADHD-Optimized Portfolio Development Environment<br>
+                <small style="color: #4C63D2;">Current Time: ${timeString}${sessionText}</small>`;
+        }
+        
+        // ADHD break reminder system
+        function showBreakReminder() {
+            if (focusReminders) {
+                const reminder = document.createElement('div');
+                reminder.innerHTML = `
+                    <div style="position: fixed; top: 20px; right: 20px; background: #FF6B35; color: white; 
+                                padding: 1rem; border-radius: 8px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                        <strong>🧠 ADHD Break Reminder</strong><br>
+                        25+ min session - Consider a 5min break!<br>
+                        <button onclick="this.parentElement.remove(); resetSession();" 
+                                style="background: white; color: #FF6B35; border: none; padding: 0.25rem 0.5rem; 
+                                       border-radius: 4px; margin-top: 0.5rem; cursor: pointer;">
+                            Reset Session
+                        </button>
+                        <button onclick="this.parentElement.remove();" 
+                                style="background: transparent; color: white; border: 1px solid white; 
+                                       padding: 0.25rem 0.5rem; border-radius: 4px; margin: 0.5rem 0 0 0.5rem; cursor: pointer;">
+                            Continue
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(reminder);
+                
+                // Auto-remove after 10 seconds
+                setTimeout(() => {
+                    if (reminder.parentElement) reminder.remove();
+                }, 10000);
+            }
+        }
+        
+        // Reset session timer
+        function resetSession() {
+            sessionStartTime = Date.now();
+            breakReminder = false;
+        }
+        
+        // ADHD-optimized keyboard navigation with visual feedback
+        function showKeyboardHint(key, action) {
+            const hint = document.createElement('div');
+            hint.innerHTML = `
+                <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+                            background: #4C63D2; color: white; padding: 0.75rem 1.5rem; 
+                            border-radius: 25px; z-index: 1000; font-weight: 600;">
+                    Pressed "${key}" → ${action}
+                </div>
+            `;
+            document.body.appendChild(hint);
+            setTimeout(() => hint.remove(), 2000);
+        }
+        
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case '1':
+                    showKeyboardHint('1', 'Opening Main Portfolio');
+                    setTimeout(() => window.open('portfolio-main.html', '_blank'), 500);
+                    break;
+                case '2':
+                    showKeyboardHint('2', 'Opening Modular Version');
+                    setTimeout(() => window.open('portfolio-modular.html', '_blank'), 500);
+                    break;
+                case 'r':
+                case 'R':
+                    showKeyboardHint('R', 'Session Reset');
+                    resetSession();
+                    break;
+                case 'f':
+                case 'F':
+                    focusReminders = !focusReminders;
+                    showKeyboardHint('F', focusReminders ? 'Focus Reminders ON' : 'Focus Reminders OFF');
+                    break;
+                case 'Escape':
+                    // Clear all notifications
+                    document.querySelectorAll('[style*="position: fixed"]').forEach(el => {
+                        if (el.innerHTML.includes('Break Reminder') || el.innerHTML.includes('Pressed')) {
+                            el.remove();
+                        }
+                    });
+                    break;
+            }
+        });
+        
+        // Initialize system
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        // Enhanced console logging for ADHD workflow
+        console.log('🎯 ADHD WORKSPACE READY');
+        console.log('⌨️  KEYBOARD SHORTCUTS:');
+        console.log('   1 = Open Main Portfolio');
+        console.log('   2 = Open Modular Version');
+        console.log('   R = Reset Session Timer');
+        console.log('   F = Toggle Focus Reminders');
+        console.log('   ESC = Clear Notifications');
+        console.log('🧠 Break reminders active every 25 minutes');
+        
+        // Welcome message for ADHD workflow
+        setTimeout(() => {
+            const welcome = document.createElement('div');
+            welcome.innerHTML = `
+                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                            background: rgba(76, 99, 210, 0.95); color: white; padding: 2rem; 
+                            border-radius: 12px; z-index: 1000; text-align: center; max-width: 400px;">
+                    <h3 style="margin-bottom: 1rem;">🎯 Workspace Ready!</h3>
+                    <p style="margin-bottom: 1rem;">ADHD-optimized for focus and productivity</p>
+                    <div style="font-size: 0.9rem; margin-bottom: 1rem;">
+                        <strong>Quick Start:</strong><br>
+                        Press <kbd style="background: #FF6B35; padding: 0.25rem 0.5rem; border-radius: 4px;">1</kbd> 
+                        or click orange card above
+                    </div>
+                    <button onclick="this.parentElement.remove();" 
+                            style="background: #FF6B35; color: white; border: none; padding: 0.75rem 1.5rem; 
+                                   border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        Let's Go! 🚀
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(welcome);
+        }, 1000);
+    </script>
+</body>
+</html>

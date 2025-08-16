@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Precision Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            /* PIXEL-PERFECT LAYOUT VARIABLES */
+            --header-padding: clamp(0.4rem, 0.75vw, 0.6rem);
+            --footer-padding: clamp(0.4rem, 0.75vw, 0.6rem);
+            --header-content-height: 1.2rem;
+            --footer-content-height: 1.2rem;
+            --border-width: 1px;
+            
+            /* CALCULATED HEIGHTS */
+            --header-total-height: calc(var(--header-padding) * 2 + var(--header-content-height) + var(--border-width));
+            --footer-total-height: calc(var(--footer-padding) * 2 + var(--footer-content-height) + var(--border-width));
+            --combined-header-footer-height: calc(var(--header-total-height) + var(--footer-total-height));
+            
+            /* MOBILE OVERRIDES */
+            --mobile-header-padding: clamp(0.5rem, 2vw, 1rem);
+            --mobile-footer-padding: clamp(0.5rem, 2vw, 1rem);
+            --mobile-header-total-height: calc(var(--mobile-header-padding) * 2 + var(--header-content-height) + var(--border-width));
+            --mobile-footer-total-height: calc(var(--mobile-footer-padding) * 2 + var(--footer-content-height) + var(--border-width));
+            --mobile-combined-header-footer-height: calc(var(--mobile-header-total-height) + var(--mobile-footer-total-height));
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box;
+            min-height: 100vh;
+            height: 100vh;
+        }
+        
+        .test-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(76, 99, 210, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: var(--header-padding) 1rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--header-total-height);
+        }
+        
+        .test-container {
+            min-height: calc(100vh - var(--combined-header-footer-height));
+            max-height: calc(100vh - var(--combined-header-footer-height));
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+            padding-top: var(--header-total-height);
+            padding-bottom: var(--footer-total-height);
+            padding-left: 2rem;
+            padding-right: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        
+        .test-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 107, 53, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: var(--footer-padding) 1rem;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--footer-total-height);
+        }
+        
+        .test-content {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4C63D2;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .measurement-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .gap-indicator {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: red;
+            z-index: 200;
+        }
+        
+        .gap-top {
+            top: calc(var(--header-total-height) - 1px);
+        }
+        
+        .gap-bottom {
+            bottom: calc(var(--footer-total-height) - 1px);
+        }
+        
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .test-header, .test-footer {
+                padding: var(--mobile-header-padding) 1rem;
+                height: var(--mobile-header-total-height);
+            }
+            
+            .test-footer {
+                height: var(--mobile-footer-total-height);
+            }
+            
+            .test-container {
+                min-height: calc(100vh - var(--mobile-combined-header-footer-height));
+                max-height: calc(100vh - var(--mobile-combined-header-footer-height));
+                padding-top: var(--mobile-header-total-height);
+                padding-bottom: var(--mobile-footer-total-height);
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .gap-top {
+                top: calc(var(--mobile-header-total-height) - 1px);
+            }
+            
+            .gap-bottom {
+                bottom: calc(var(--mobile-footer-total-height) - 1px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- GAP INDICATORS (red lines should be invisible if layout is perfect) -->
+    <div class="gap-indicator gap-top"></div>
+    <div class="gap-indicator gap-bottom"></div>
+    
+    <!-- FIXED HEADER -->
+    <header class="test-header">
+        <strong>HEADER - Height: var(--header-total-height)</strong>
+    </header>
+    
+    <!-- MAIN CONTAINER -->
+    <main class="test-container">
+        <div class="test-content">
+            <h1>PIXEL-PERFECT LAYOUT TEST</h1>
+            <p><strong>SUCCESS CRITERIA:</strong></p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Red gap indicators are NOT visible</li>
+                <li>This content starts immediately after header</li>
+                <li>This content ends immediately before footer</li>
+                <li>No white gaps or overlaps anywhere</li>
+                <li>Layout works on all screen sizes</li>
+            </ul>
+        </div>
+        
+        <div class="measurement-info">
+            <h3>Current Calculations (Desktop):</h3>
+            <p>Header Padding: clamp(0.4rem, 0.75vw, 0.6rem)</p>
+            <p>Header Content: 1.2rem</p>
+            <p>Border: 1px</p>
+            <p>Total Header Height: calc(padding * 2 + content + border)</p>
+            <p>Container Height: calc(100vh - header - footer)</p>
+            <p><strong>Expected Result: ZERO gaps between elements</strong></p>
+        </div>
+        
+        <div class="measurement-info">
+            <h3>Viewport Dimensions:</h3>
+            <p>Window Width: <span id="width">--</span>px</p>
+            <p>Window Height: <span id="height">--</span>px</p>
+            <p>Container Height: <span id="containerHeight">--</span>px</p>
+            <p>Header Height: <span id="headerHeight">--</span>px</p>
+            <p>Footer Height: <span id="footerHeight">--</span>px</p>
+        </div>
+        
+        <div class="test-content" style="margin-top: auto;">
+            <h2>BOTTOM CONTENT</h2>
+            <p>This should be directly above the footer with no gap.</p>
+        </div>
+    </main>
+    
+    <!-- FIXED FOOTER -->
+    <footer class="test-footer">
+        <strong>FOOTER - Height: var(--footer-total-height)</strong>
+    </footer>
+    
+    <script>
+        function updateMeasurements() {
+            document.getElementById('width').textContent = window.innerWidth;
+            document.getElementById('height').textContent = window.innerHeight;
+            document.getElementById('containerHeight').textContent = document.querySelector('.test-container').offsetHeight;
+            document.getElementById('headerHeight').textContent = document.querySelector('.test-header').offsetHeight;
+            document.getElementById('footerHeight').textContent = document.querySelector('.test-footer').offsetHeight;
+        }
+        
+        updateMeasurements();
+        window.addEventListener('resize', updateMeasurements);
+        
+        // Visual gap detection
+        function detectGaps() {
+            const header = document.querySelector('.test-header');
+            const container = document.querySelector('.test-container');
+            const footer = document.querySelector('.test-footer');
+            
+            const headerBottom = header.offsetTop + header.offsetHeight;
+            const containerTop = container.offsetTop;
+            const containerBottom = container.offsetTop + container.offsetHeight;
+            const footerTop = footer.offsetTop;
+            
+            console.log('Gap Detection:');
+            console.log('Header bottom:', headerBottom, 'Container top:', containerTop);
+            console.log('Gap at top:', containerTop - headerBottom, 'px');
+            console.log('Container bottom:', containerBottom, 'Footer top:', footerTop);
+            console.log('Gap at bottom:', footerTop - containerBottom, 'px');
+        }
+        
+        setTimeout(detectGaps, 100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julian Müller - Enterprise Gamification Specialist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* ===== NORMAL MOUSE + SUPERMAN GRADIENT BUBBLE ===== */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E1E7F5 50%, #D1D9E8 100%);
+            color: #1a1a1a;
+            overflow-x: hidden;
+            cursor: auto;
+        }
+        
+        .catching-bubble {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, rgba(96,165,250,0.4), rgba(255,107,53,0.3), rgba(251,191,36,0.3));
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.8);
+            transform: translate(-10px, -10px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        
+        /* ===== SCREENSHOT-EXACT TOGGLE COLORS ===== */
+        .score-area {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0px;
+        }
+        
+        .score-toggle-container {
+            /* No background - transparent */
+        }
+        
+        .score-toggle-switch {
+            position: relative;
+            width: 70px;
+            height: 30px;
+            background: #374151;
+            border-radius: 6px 6px 0px 0px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-bottom: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .score-toggle-switch.active {
+            background: #374151;
+        }
+        
+        .score-toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 31px;
+            height: 24px;
+            background: #9CA3AF;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .score-toggle-switch.active .score-toggle-slider {
+            transform: translateX(35px);
+        }
+        
+        .score-toggle-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            z-index: 2;
+        }
+        
+        .score-toggle-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            user-select: none;
+            color: #FFFFFF;
+        }
+        
+        /* Active button text over slider */
+        .score-toggle-active-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 31px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #FFFFFF;
+            z-index: 4;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .score-toggle-switch.active .score-toggle-active-label {
+            transform: translateX(35px);
+        }
+        
+        /* ===== UNIFIED SCORE FIELD (NO GAP) ===== */
+        .score-container {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(15px);
+            padding: 0.8rem 0.6rem;
+            border-radius: 0px 0px 6px 6px;
+            border: 1px solid rgba(0,0,0,0.12);
+            border-top: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            width: 70px;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .score-container.score-hidden {
+            opacity: 0;
+            transform: translateY(-5px) scale(0.95);
+            pointer-events: none;
+        }
+        
+        .score-title {
+            font-size: 0.55rem;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            line-height: 1;
+        }
+        
+        .score-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #374151;
+            line-height: 1;
+        }
+        
+        .score-flash {
+            animation: scoreFlash 0.5s ease;
+        }
+        
+        @keyframes scoreFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background: rgba(76,99,210,0.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* ===== TRANSPARENCY CONTROLS (REMOVED) ===== */
+        /* White/Black toggle removed - only black projects now */
+        
+        /* ===== CONSISTENT SUPERMAN TRAILS ===== */
+        .enterprise-trail {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            opacity: 0;
+            animation: consistentTrailFall 8s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(96,165,250,0.4));
+            cursor: pointer;
+        }
+        
+        /* Superman Original Colors */
+        .trail-superman-blue {
+            background: linear-gradient(0deg, transparent, #60A5FA, #FF6B35, transparent);
+        }
+        
+        .trail-superman-red {
+            background: linear-gradient(0deg, transparent, #FF6B35, #60A5FA, transparent);
+        }
+        
+        .trail-superman-gold {
+            background: linear-gradient(0deg, transparent, #FBBF24, #60A5FA, transparent);
+        }
+        
+        .trail-superman-white {
+            background: linear-gradient(0deg, transparent, #FFFFFF, #60A5FA, transparent);
+        }
+        
+        /* Staggered Animation Delays */
+        .enterprise-trail:nth-child(1) { animation-delay: 0s; }
+        .enterprise-trail:nth-child(2) { animation-delay: 2s; }
+        .enterprise-trail:nth-child(3) { animation-delay: 4s; }
+        .enterprise-trail:nth-child(4) { animation-delay: 6s; }
+        
+        @keyframes consistentTrailFall {
+            0% { 
+                opacity: 0; 
+                transform: translateY(-120px); 
+            }
+            5% { 
+                opacity: 1; 
+                transform: translateY(-100px); 
+            }
+            95% { 
+                opacity: 1; 
+                transform: translateY(calc(100vh + 20px)); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translateY(calc(100vh + 40px)); 
+            }
+        }
+        
+        /* Caught Trail Effect */
+        .trail-caught {
+            animation: trailCaught 0.5s ease forwards;
+        }
+        
+        @keyframes trailCaught {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(2) rotate(180deg); opacity: 0.8; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+        
+        /* ===== PROJECT CONTAINERS ===== */
+        .content {
+            position: relative;
+            z-index: 10;
+            padding: 6rem 4rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4C63D2 50%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-desc {
+            font-size: 1.3rem;
+            color: #475569;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        
+        /* ===== TRANSPARENT PROJECT CONTAINERS (BLACK ONLY) ===== */
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        
+        .project {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(76,99,210,0.05), rgba(59,130,246,0.05));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .project:hover::before {
+            opacity: 1;
+        }
+        
+        .project:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: rgba(0,0,0,0.7);
+            border-color: rgba(96,165,250,0.4);
+            box-shadow: 0 25px 80px rgba(96,165,250,0.2);
+        }
+        
+        .project-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .project-number {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .project:hover .project-number {
+            color: #60A5FA;
+        }
+        
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .project:hover .project-title {
+            color: #3B82F6;
+        }
+        
+        .project-desc {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .projects {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .content {
+                padding: 5rem 2rem 2rem;
+            }
+            
+            .project {
+                padding: 2rem;
+            }
+            
+            .custom-cursor,
+            .cursor-trail {
+                display: none;
+            }
+            
+            .catching-bubble {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+            
+            .score-display {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .transparency-controls {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Transparent Superman Gradient Bubble -->
+    <div class="catching-bubble"></div>
+    
+    <!-- Score Area with Quadratic Fields -->
+    <div class="score-area">
+        <div class="score-toggle-container">
+            <div class="score-toggle-switch active" id="scoreToggleSwitch">
+                <div class="score-toggle-labels">
+                    <span class="score-toggle-label score-toggle-off">OFF</span>
+                    <span class="score-toggle-label score-toggle-on">ON</span>
+                </div>
+                <div class="score-toggle-slider">
+                    <div class="score-toggle-active-label" id="activeLabel">ON</div>
+                </div>
+            </div>
+        </div>
+        <div class="score-container" id="scoreContainer">
+            <div class="score-title">Score</div>
+            <div class="score-value" id="scoreValue">0</div>
+        </div>
+    </div>
+    
+    <!-- Superman Color Trails - Only 4 -->
+    <div class="enterprise-trail trail-superman-blue" data-trail="0"></div>
+    <div class="enterprise-trail trail-superman-red" data-trail="1"></div>
+    <div class="enterprise-trail trail-superman-gold" data-trail="2"></div>
+    <div class="enterprise-trail trail-superman-white" data-trail="3"></div>
+    
+    <div class="content">
+        <div class="hero">
+            <div class="hero-subtitle">Gamification Learning Specialist</div>
+            <h1 class="hero-title">Julian Müller</h1>
+            <p class="hero-desc">Transforming Organizations through Game-Based Learning</p>
+        </div>
+        
+        <div class="projects">
+            <div class="project">
+                <div class="project-content">
+                    <div class="project-number">Project 01</div>
+                    <h3 class="project-title">New Work Transformation</h3>
+                    <p class="project-desc">Strategisches Gaming für Organisationsentwicklung und moderne Arbeitskultur. Entwicklung von Gamification-Strategien für DAX-Unternehmen.</p>
+                </div>
+            </div>
+            <div class="project">
+                <div class="project-content">
+                    <div class="project-number">Project 02</div>
+                    <h3 class="project-title">Project Leadership</h3>
+                    <p class="project-desc">4-Wochen Team-Lead Web Game Projekt mit agilen Entwicklungsmethoden. Cross-funktionale Teamführung und Stakeholder-Management.</p>
+                </div>
+            </div>
+            <div class="project">
+                <div class="project-content">
+                    <div class="project-number">Project 03</div>
+                    <h3 class="project-title">Creative Problem Solving</h3>
+                    <p class="project-desc">Innovative Game Mechanics für komplexe Systeme und Prozessoptimierung. Design Thinking meets Behavioral Economics.</p>
+                </div>
+            </div>
+            <div class="project">
+                <div class="project-content">
+                    <div class="project-number">Project 04</div>
+                    <h3 class="project-title">Journey Design</h3>
+                    <p class="project-desc">Narrative User Experience Mapping für Enterprise Learning Journeys. Storytelling-Ansätze für nachhaltige Verhaltensänderung.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ===== SIMPLIFIED GAME SYSTEM - NO AVOIDANCE =====
+        class PortfolioGameSystem {
+            constructor() {
+                this.score = 0;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.bubbleX = 0;
+                this.bubbleY = 0;
+                this.catchRadius = 30;
+                this.baseAnimationDuration = 8; // Original Superman timing
+                this.velocityMultiplier = 1.0;
+                this.scoreVisible = true;
+                
+                this.bubble = document.querySelector('.catching-bubble');
+                this.scoreElement = document.getElementById('scoreValue');
+                this.scoreContainer = document.getElementById('scoreContainer');
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.setupRandomSpawns();
+                this.setBlackTransparencyDefault();
+                this.startGameLoop();
+                console.log('Simplified Portfolio Game System initialized');
+            }
+            
+            setBlackTransparencyDefault() {
+                const projects = document.querySelectorAll('.project');
+                projects.forEach(project => {
+                    project.classList.add('black-transparency');
+                });
+            }
+            
+            setupRandomSpawns() {
+                const trails = document.querySelectorAll('.enterprise-trail');
+                trails.forEach(trail => {
+                    const randomLeft = Math.random() * 90 + 5;
+                    trail.style.left = randomLeft + '%';
+                });
+            }
+            
+            updateTrailVelocity() {
+                this.velocityMultiplier += 0.03;
+                const newDuration = this.baseAnimationDuration / this.velocityMultiplier;
+                
+                const trails = document.querySelectorAll('.enterprise-trail');
+                trails.forEach(trail => {
+                    trail.style.animationDuration = `${newDuration}s`;
+                });
+                
+                console.log(`Velocity: ${(this.velocityMultiplier * 100).toFixed(1)}%`);
+            }
+            
+            setupEventListeners() {
+                // Mouse tracking for bubble following
+                document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                
+                // Score toggle with screenshot-style switch
+                const scoreToggleSwitch = document.getElementById('scoreToggleSwitch');
+                if (scoreToggleSwitch) {
+                    scoreToggleSwitch.addEventListener('click', () => this.toggleScore());
+                }
+                
+                // Transparency controls
+                document.querySelectorAll('.transparency-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.toggleTransparency(e));
+                });
+            }
+            
+            handleMouseMove(e) {
+                try {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                    
+                    // Smooth bubble following with delay
+                    const targetX = this.mouseX;
+                    const targetY = this.mouseY;
+                    
+                    this.bubbleX += (targetX - this.bubbleX) * 0.15;
+                    this.bubbleY += (targetY - this.bubbleY) * 0.15;
+                    
+                    if (this.bubble) {
+                        this.bubble.style.left = this.bubbleX + 'px';
+                        this.bubble.style.top = this.bubbleY + 'px';
+                    }
+                    
+                    // Check for trail catches (simplified - no avoidance)
+                    this.checkTrailCatches();
+                } catch (error) {
+                    console.error('Mouse tracking error:', error);
+                }
+            }
+            
+            checkTrailCatches() {
+                const trails = document.querySelectorAll('.enterprise-trail');
+                
+                trails.forEach(trail => {
+                    try {
+                        if (trail.classList.contains('trail-caught')) return;
+                        
+                        const rect = trail.getBoundingClientRect();
+                        const trailX = rect.left + (rect.width / 2);
+                        const trailY = rect.top + (rect.height / 2);
+                        
+                        // Check distance ONLY to bubble position, not mouse
+                        const distance = Math.sqrt(
+                            Math.pow(this.bubbleX - trailX, 2) + 
+                            Math.pow(this.bubbleY - trailY, 2)
+                        );
+                        
+                        // Only bubble catches trails
+                        if (distance < this.catchRadius) {
+                            this.catchTrail({ target: trail });
+                        }
+                    } catch (error) {
+                        console.error('Trail catch check error:', error);
+                    }
+                });
+            }
+            
+            catchTrail(e) {
+                try {
+                    const trail = e.target;
+                    if (trail.classList.contains('trail-caught')) return;
+                    
+                    trail.classList.add('trail-caught');
+                    
+                    this.score++;
+                    this.updateScore();
+                    this.updateTrailVelocity();
+                    
+                    // Bubble pulse effect on catch
+                    if (this.bubble) {
+                        this.bubble.style.transform = 'translate(-10px, -10px) scale(1.5)';
+                        setTimeout(() => {
+                            this.bubble.style.transform = 'translate(-10px, -10px) scale(1)';
+                        }, 200);
+                    }
+                    
+                    // Reset spawn position
+                    setTimeout(() => {
+                        const randomLeft = Math.random() * 90 + 5;
+                        trail.style.left = randomLeft + '%';
+                    }, 250);
+                    
+                    // Reset trail after animation
+                    setTimeout(() => {
+                        trail.classList.remove('trail-caught');
+                    }, 500);
+                    
+                    console.log(`Bubble caught trail! Score: ${this.score}`);
+                } catch (error) {
+                    console.error('Catch trail error:', error);
+                }
+            }
+            
+            toggleScore() {
+                try {
+                    this.scoreVisible = !this.scoreVisible;
+                    
+                    const scoreToggleSwitch = document.getElementById('scoreToggleSwitch');
+                    const scoreContainer = document.getElementById('scoreContainer');
+                    const activeLabel = document.getElementById('activeLabel');
+                    
+                    if (this.scoreVisible) {
+                        scoreToggleSwitch.classList.add('active');
+                        scoreContainer.classList.remove('score-hidden');
+                        activeLabel.textContent = 'ON';
+                    } else {
+                        scoreToggleSwitch.classList.remove('active');
+                        scoreContainer.classList.add('score-hidden');
+                        activeLabel.textContent = 'OFF';
+                    }
+                    
+                    console.log(`Score display: ${this.scoreVisible ? 'ON' : 'OFF'}`);
+                } catch (error) {
+                    console.error('Score toggle error:', error);
+                }
+            }
+            
+            updateScore() {
+                try {
+                    if (this.scoreElement && this.scoreVisible) {
+                        this.scoreElement.textContent = this.score;
+                        
+                        // Subtle flash effect
+                        const scoreContainer = document.getElementById('scoreContainer');
+                        scoreContainer.style.transform = 'scale(1.08)';
+                        setTimeout(() => {
+                            scoreContainer.style.transform = 'scale(1)';
+                        }, 150);
+                    }
+                } catch (error) {
+                    console.error('Score update error:', error);
+                }
+            }
+            
+            startGameLoop() {
+                // Randomize spawn positions every 12 seconds
+                setInterval(() => {
+                    this.setupRandomSpawns();
+                }, 12000);
+                
+                // Performance monitoring
+                setInterval(() => {
+                    if (this.score > 0 && this.score % 5 === 0) {
+                        console.log(`Score milestone: ${this.score}`);
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Initialize system when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Mobile optimization
+                if ('ontouchstart' in window) {
+                    document.body.style.cursor = 'auto';
+                    console.log('Mobile device detected - cursor disabled');
+                    return;
+                }
+                
+                // Initialize game system
+                const gameSystem = new PortfolioGameSystem();
+                window.portfolioGame = gameSystem; // Global access for debugging
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

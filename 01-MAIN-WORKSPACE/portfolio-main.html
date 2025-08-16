@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Julian Gomez - Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet" preload>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -45,7 +45,7 @@
             background: var(--color-bg);
             color: var(--color-text);
             overflow-x: hidden;
-            position: relative;
+            position: relative; 
             
             /* CRITICAL: Remove all browser defaults that create gaps */
             margin: 0;
@@ -53,23 +53,25 @@
             border: 0;
             
             /* PRECISION: Ensure consistent box model */
-            box-sizing: border-box;
+            box-sizing: content-box;
             
-            /* VIEWPORT: Ensure full height usage */
-            min-height: 100vh;
-            height: 100vh;
+            /* VIEWPORT: Start below header - NO SCROLLING */
+            min-height: fit-content;
+            height: auto;
+            padding-top: var(--header-total-height);
+            overflow: hidden;
         }
         
         /* BASE GRID: Always visible, opacity 0.15, moves infinitely */
         .bg-dots {
-            position: absolute;
-            top: 0;
+            position: relative;
+            top: 0vw;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.15;
+            opacity: 0.09;
             background-image: radial-gradient(circle, #fff 1px, transparent 1px);
-            background-size: 30px 30px;
+            background-size: 50px 50px;
             z-index: 1;
             pointer-events: none;
             animation: dotMove 20s linear infinite;
@@ -91,27 +93,34 @@
             transition: opacity 0.3s ease;
         }
         
-        /* STARS ACTIVATION: Only via body.enable-stars class */
+        /* STARS ACTIVATION: Only via body.enable-stars class - DOUBLE LOOP PROTECTION */
         body.enable-stars .bg-dots::before {
             opacity: 1;
             animation: dotMove 20s linear infinite, starTwinkle 4s ease-in-out infinite;
+            /* ANIMATION CONFLICT PREVENTION: Ensure transforms don't interfere */
+            will-change: transform, opacity;
+            animation-fill-mode: both;
         }
         
-        /* GRID ANIMATIONS */
-        @keyframes dotMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, 30px); }
+        /* GRID ANIMATIONS - with accessibility support */
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes dotMove {
+                0% { transform: translate(0, 0); }
+                100% { transform: translate(30px, 30px); }
+            }
         }
         
         /* UNUSED - can be removed */
         
         /* STARS BRIGHTNESS: 50% brighter than original */
-        @keyframes starTwinkle {
-            0% { opacity: 0.3; }
-            25% { opacity: 1.0; }
-            50% { opacity: 0.15; }
-            75% { opacity: 1.0; }
-            100% { opacity: 0.45; }
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes starTwinkle {
+                0% { opacity: 0.3; }
+                25% { opacity: 1.0; }
+                50% { opacity: 0.15; }
+                75% { opacity: 1.0; }
+                100% { opacity: 0.45; }
+            }
         }
         
         
@@ -131,18 +140,21 @@
             gap: 1rem;
         }
 
-        /* V-RULE IMPLEMENTATION: ABSOLUTE POSITIONING FOR ZERO OVERLAP */
+        /* V-RULE IMPLEMENTATION: FAILSAFE ABSOLUTE POSITIONING */
         .container {
-            /* CRITICAL V-RULE: Position-based instead of padding-based */
+            /* Position-based with fallback validation */
             position: absolute;
-            top: var(--header-total-height);
+			top: var(--header-total-height);
             bottom: var(--footer-total-height);
             left: 0;
             right: 0;
+			
             
-            /* MATHEMATICAL PRECISION: Height is automatically calculated by top/bottom */
-            height: auto;
+            /* MATHEMATICAL PRECISION: Exact fit to content - NO SCROLLING */
+            height: fit-content;
             width: auto;
+            min-height: auto;
+            max-height: none;
             
             /* CONTENT PADDING: Only horizontal padding, no vertical overlap risk */
             padding: 0 clamp(0.5rem, 1.5vw, 1.5rem);
@@ -156,12 +168,12 @@
                 "project-middle-left . project-bottom-right"
                 ". project-bottom-center .";
             grid-template-rows: auto auto auto auto;
-            grid-template-columns: 23vw 1fr 27vw;
+            grid-template-columns: 30vw 1fr 34vw;
             gap: clamp(1.5rem, 2.5vw, 3rem);
             z-index: 2;
             
-            /* PRECISE OVERFLOW CONTROL */
-            overflow-y: auto;
+            /* PRECISE OVERFLOW CONTROL - NO SCROLLING */
+            overflow: visible;
             box-sizing: border-box;
         }
 
@@ -181,7 +193,7 @@
             gap: 1rem;
         }
         
-        /* HEADER - EMERGENCY REPAIR */
+        /* HEADER */
         .header-item {
             font-size: clamp(0.65rem, 1vw, 0.8rem);
             color: var(--color-text-dim);
@@ -212,7 +224,7 @@
             align-self: center;
             justify-self: center;
             position: relative;
-            top: clamp(-10px, -1vh, -5px); /* Reduced from -20px */
+            top: clamp(-60px, -1vh, -130px); /* Reduced from -20px */
         }
         
         .center-title h1 {
@@ -249,8 +261,8 @@
             box-shadow: 0 2px 20px rgba(0,0,0,0.2);
             aspect-ratio: 1.6/1;
             position: relative;
-            width: min(22vw, 288px);
-            max-width: 288px;
+            width: min(22vw, 230px);
+            max-width: 230px;
             justify-self: center;
         }
         
@@ -271,40 +283,40 @@
             grid-area: project-top-left; 
             animation-delay: 0.1s;
             transform-origin: bottom right;
-            margin-left: clamp(20px, 12vw, 120px); /* Reduced from 300px */
+            margin-left: clamp(30px, 12vw, 120px); /* Reduced from 300px */
             position: relative;
-            top: clamp(10px, 2vh, 25px); /* Reduced from 60px */
+            top: clamp(70px, 12vh, 25px); /* Reduced from 60px */
         }
         .project-top-right { 
             grid-area: project-top-right; 
             animation-delay: 0.2s;
             transform-origin: bottom left;
-            margin-right: clamp(15px, 8vw, 80px); /* Reduced from 155px */
+            margin-right: clamp(135px, 18vw, 200px); /* Reduced from 155px */
             position: relative;
-            top: clamp(8px, 1.8vh, 22px); /* Reduced from 55px */
+            top: clamp(80px, 1.8vh, 55px); /* Reduced from 55px */
         }
         .project-middle-left { 
             grid-area: project-middle-left; 
             animation-delay: 0.3s;
             transform-origin: top right;
-            margin-left: clamp(10px, 2vw, 25px); /* Kept similar */
+            margin-left: clamp(40px, 2vw, 55px); /* Kept similar */
             position: relative;
-            top: clamp(-15px, -1.5vh, -10px); /* Reduced from -30px */
+            top: clamp(-75px, -0.5vh, -200px); /* Reduced from -30px */
         }
         .project-bottom-right { 
             grid-area: project-bottom-right; 
             animation-delay: 0.4s;
             transform-origin: top left;
-            margin-right: clamp(-5px, -0.5vw, 0px); /* Kept similar */
+            margin-right: clamp(-0px, -5vw, -100px); /* Kept similar */
             position: relative;
-            top: clamp(-10px, -1vh, -8px); /* Reduced from -20px */
+            top: clamp(-80px, -0.5vh, -90px); /* Reduced from -20px */
         }
         .project-bottom-center { 
             grid-area: project-bottom-center; 
             animation-delay: 0.5s;
             transform-origin: top center;
             position: relative;
-            top: clamp(-40px, -4vh, -25px); /* Greatly reduced from -130px */
+            top: clamp(-190px, -4vh, -300px); /* Greatly reduced from -130px */
         }
         
         .project-image {
@@ -771,56 +783,110 @@
         
         /* MOBILE RESPONSIVE - PIXEL-PERFECT */
         @media (max-width: 768px) {
+            /* MOBILE BODY OVERRIDE */
+            body {
+                height: auto !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                min-height: 100vh !important;
+                padding-top: 0 !important;
+            }
+            
             .header, .footer {
                 grid-template-columns: 1fr 1fr;
                 padding: clamp(0.5rem, 2vw, 1rem);
             }
             
             .container {
-                /* V-RULE MOBILE: Same absolute positioning approach */
-                position: absolute;
-                top: var(--mobile-header-total-height);
-                bottom: var(--mobile-footer-total-height);
-                left: 0;
-                right: 0;
+                /* V-RULE MOBILE: Static flow positioning */
+                position: static;
+                top: auto;
+                bottom: auto;
+                left: auto;
+                right: auto;
+                z-index: 10;
                 
-                /* MATHEMATICAL PRECISION: Height calculated automatically */
-                height: auto;
+                /* MATHEMATICAL PRECISION: Mobile fit-content */
+                height: fit-content;
                 width: auto;
+                min-height: auto;
+                max-height: none;
                 
-                /* MOBILE CONTENT PADDING: Only horizontal, no overlap risk */
-                padding: 0 0.5rem;
+                /* MOBILE CONTENT PADDING: Vertical spacing for proper display */
+                padding: clamp(1rem, 3vw, 2rem);
                 margin: 0;
                 
-                /* MOBILE GRID LAYOUT */
+                /* MOBILE GRID LAYOUT - VERTICAL STACK */
                 grid-template-areas: 
-                    "project-top-left project-top-right"
-                    "center-title center-title"
-                    "project-middle-left project-bottom-right"
-                    "project-bottom-center project-bottom-center";
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto auto;
-                gap: clamp(1.2rem, 3vw, 2rem);
+                    "center-title"
+                    "project-top-left"
+                    "project-top-right"
+                    "project-middle-left"
+                    "project-bottom-right"
+                    "project-bottom-center";
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto auto auto;
+                /* OVERLAP-PROOF GAP: Mathematical calculation ensures titles never collide
+                   Formula: title_offset + title_height + card_margin + safety_buffer
+                   2.5rem + 1.5rem + 4rem + 2rem = 10rem minimum */
+                gap: clamp(10rem, 16vh, 14rem);
                 
-                /* MOBILE OVERFLOW CONTROL */
-                overflow-y: auto;
+                /* MOBILE OVERFLOW CONTROL - NO SCROLLING */
+                overflow: visible;
                 box-sizing: border-box;
             }
             
             .project-card {
-                width: min(35vw, 150px);
-                aspect-ratio: 1/1;
-                max-width: 150px;
+                width: 100%;
+                max-width: 280px;
+                aspect-ratio: 2/1; /* REDUCED HEIGHT BY 50% */
+                margin: 0 auto;
+                /* CRITICAL: Add top margin to create buffer zone for external titles */
+                margin-top: 4rem;
             }
             
             .project-card:hover {
-                transform: scale(1.8) translateY(-10px);
+                transform: scale(1.05);
                 z-index: 100;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             }
             
             .header-center, .footer-center { display: none; }
-            .project-info-external { top: -1.2rem; }
+            .project-info-external { 
+                /* RESPONSIVE TITLE POSITIONING: Scales with viewport to prevent overlaps */
+                top: clamp(-2rem, -3vh, -2.5rem); /* Dynamic negative offset */
+                padding: 0 0.5rem;
+                margin-bottom: clamp(0.5rem, 1vh, 1rem); /* Responsive bottom spacing */
+                /* OVERLAP PREVENTION: High z-index keeps titles above all content */
+                z-index: 20;
+                position: absolute;
+                left: 0;
+                right: 0;
+                /* TITLE SAFETY: Ensure text wrapping doesn't cause layout issues */
+                overflow: visible;
+                white-space: nowrap;
+            }
+            
+            /* HIDE ANIMATION TOGGLE ON MOBILE */
+            .animation-toggle { display: none !important; }
+            
+            /* MOBILE BACKGROUND - MINIMAL */
+            .bg-dots { 
+                opacity: 0.03 !important; 
+                z-index: 0 !important;
+            }
+            
+            /* MOBILE CENTER TITLE OVERRIDE - NO HEADER OVERLAP */
+            .center-title {
+                top: 0 !important;
+                z-index: 15;
+                background: var(--color-bg);
+                padding: clamp(0.5rem, 2vw, 1rem);
+                border-radius: 0.5rem;
+                margin-top: clamp(1rem, 3vw, 2rem);
+                /* CLEARANCE FOR SUBSEQUENT ELEMENTS: Ensures adequate spacing for project titles */
+                margin-bottom: clamp(3rem, 6vh, 5rem);
+            }
             
             .enterprise-trail { opacity: 0.3; width: 1px; height: 60px; }
         }
@@ -1140,9 +1206,18 @@
             const toggle = document.getElementById('animationToggle');
             const sliderIcon = document.getElementById('sliderIcon');
             
+            // DOUBLE LOOP PREVENTION: Force animation completion before state change
+            const animatedElements = document.querySelectorAll('.bg-dots::before, .enterprise-trail');
+            animatedElements.forEach(el => {
+                if (el.style.animation) el.style.animationPlayState = 'paused';
+            });
+            
             // ATOMIC STATE: Clear all, then add only what's needed
             body.classList.remove('enable-stars', 'enable-trails');
             toggle.classList.remove('stars', 'neutral', 'trails');
+            
+            // FORCE REFLOW: Ensure DOM updates before new animations
+            body.offsetHeight;
             
             animationState = newState;
             

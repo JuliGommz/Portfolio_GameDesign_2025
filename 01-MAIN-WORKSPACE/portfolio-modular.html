@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julian Gomez - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Animation Layer -->
+    <div class="bg-dots"></div>
+    
+    <!-- Superman Trails -->
+    <div class="enterprise-trail trail-superman-blue"></div>
+    <div class="enterprise-trail trail-superman-red"></div>
+    <div class="enterprise-trail trail-superman-gold"></div>
+    <div class="enterprise-trail trail-superman-white"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor-box" id="cursorBox">View Project</div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-item header-left sans-font">
+            Portfolio<br>
+            <span class="serif-content">Internship Application</span>
+        </div>
+        <div class="header-item header-center sans-font">
+            Creator<br>
+            <span class="serif-content">Julian Gomez</span>
+        </div>
+        <div class="header-item header-right sans-font">
+            What<br>
+            <span class="serif-content">Creating Impact through Strategic Storytelling</span>
+        </div>
+    </header>
+    
+    <!-- Main Content Container -->
+    <div class="container">
+        
+        <!-- Center Title -->
+        <div class="center-title">
+            <h1>Narrative<br>Design</h1>
+            <div class="center-subtitle">storytelling-driven learning experiences</div>
+        </div>
+        
+        <!-- Project 1: mind.set.play -->
+        <div class="project-card project-top-left" onclick="showProject(1)">
+            <div class="project-info-external">
+                <div class="project-left-info">
+                    <span class="project-number">01</span>
+                    <span class="project-title">mind.set.play</span>
+                </div>
+                <span class="project-year">2024</span>
+            </div>
+            <div class="project-image" style="background: linear-gradient(135deg, #8B9DC3 0%, #9EADC8 100%);"></div>
+            <div class="project-icon">🎲</div>
+            <div class="project-description cosmos-variant-unified">
+                <span class="small-text">breaking down</span>
+                <span class="capital-text">COMPLEXITY</span>
+            </div>
+        </div>
+        
+        <!-- Project 2: Gourmet Invader -->
+        <div class="project-card project-top-right" onclick="showProject(2)">
+            <div class="project-info-external">
+                <div class="project-left-info">
+                    <span class="project-number">02</span>
+                    <span class="project-title">Gourmet Invader</span>
+                </div>
+                <span class="project-year">2024</span>
+            </div>
+            <div class="project-image" style="background: linear-gradient(135deg, #C4A5B8 0%, #B8A5B8 100%);"></div>
+            <div class="project-icon">👥</div>
+            <div class="project-description cosmos-variant-unified">
+                <span class="small-text">agile</span>
+                <span class="capital-text">LEADERSHIP</span>
+            </div>
+        </div>
+        
+        <!-- Project 3: Chess Quest -->
+        <div class="project-card project-middle-left" onclick="showProject(3)">
+            <div class="project-info-external">
+                <div class="project-left-info">
+                    <span class="project-number">03</span>
+                    <span class="project-title">Chess Quest</span>
+                </div>
+                <span class="project-year">2024</span>
+            </div>
+            <div class="project-image" style="background: linear-gradient(135deg, #8DB4C4 0%, #A5C4D4 100%);"></div>
+            <div class="project-icon">♟️</div>
+            <div class="project-description cosmos-variant-unified">
+                <span class="small-text">creative</span>
+                <span class="capital-text">PROBLEM-SOLVING</span>
+            </div>
+        </div>
+        
+        <!-- Project 4: Journey -->
+        <div class="project-card project-bottom-right" onclick="showProject(4)">
+            <div class="project-info-external">
+                <div class="project-left-info">
+                    <span class="project-number">04</span>
+                    <span class="project-title">Journey</span>
+                </div>
+                <span class="project-year">2024</span>
+            </div>
+            <div class="project-image" style="background: linear-gradient(135deg, #A5C4A5 0%, #B8D4B8 100%);"></div>
+            <div class="project-icon">🗺️</div>
+            <div class="project-description cosmos-variant-unified">
+                <span class="small-text">mapping</span>
+                <span class="capital-text">USER-JOURNEY</span>
+            </div>
+        </div>
+        
+        <!-- Project 5: This Website -->
+        <div class="project-card project-bottom-center" onclick="showProject(5)">
+            <div class="project-info-external">
+                <div class="project-left-info">
+                    <span class="project-number">05</span>
+                    <span class="project-title">This Website</span>
+                </div>
+                <span class="project-year">2025</span>
+            </div>
+            <div class="project-image" style="background: linear-gradient(135deg, #D4A5B8 0%, #E4B5C8 100%);"></div>
+            <div class="project-icon">💻</div>
+            <div class="project-description cosmos-variant-unified">
+                <span class="small-text">ai-human</span>
+                <span class="capital-text">COLLABORATION</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-item footer-left">
+            <h4 class="sans-font">Contact</h4>
+            <span class="serif-content contact-link" 
+                  style="font-family: 'Inter', sans-serif; color: var(--color-text); font-weight: 400; font-size: clamp(0.6rem, 0.9vw, 0.7rem);" 
+                  onmouseover="this.textContent='Write Email'" 
+                  onmouseout="this.textContent='juliangomez@gmx.de'" 
+                  onclick="window.location.href='mailto:juliangomez@gmx.de'">juliangomez@gmx.de</span><br>
+            <span class="contact-link">Get in Touch</span>
+        </div>
+        
+        <div class="footer-item footer-center">
+            <!-- Animation Toggle -->
+            <div class="animation-toggle neutral" id="animationToggle" title="Animation Control" style="margin: 0 auto 0.15rem auto;">
+                <span class="toggle-icon left">✨</span>
+                <div class="toggle-slider">
+                    <span id="sliderIcon">○</span>
+                </div>
+                <span class="toggle-icon right">⚡</span>
+            </div>
+            <div class="time-container">
+                <h4 class="sans-font">Time</h4>
+                <span class="live-time serif-font" id="liveTime">--:--:--</span>
+                <span class="coordinates serif-font">Heidelberg/Leipzig</span>
+            </div>
+        </div>
+        
+        <div class="footer-item footer-right">
+            <h4 class="sans-font">Social</h4>
+            <span class="social-link serif-font" onclick="window.open('https://linkedin.com/in/juliangomez', '_blank')">LinkedIn</span><br>
+            <span class="social-link serif-font" onclick="window.open('https://github.com/juliangomez', '_blank')">GitHub</span>
+        </div>
+    </footer>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <!-- Application Entry Point -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
