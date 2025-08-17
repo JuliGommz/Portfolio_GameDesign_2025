@@ -45,7 +45,7 @@ REM Open the START-HERE navigation in default browser
 start "" "01-MAIN-WORKSPACE\START-HERE.html"
 
 REM Wait a moment for browser to start
-timeout /t 2 /nobreak > nul
+ping 127.0.0.1 -n 3 > nul
 
 echo ✅ Workspace loaded successfully!
 echo.
