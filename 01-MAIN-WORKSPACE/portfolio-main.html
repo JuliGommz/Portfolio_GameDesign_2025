@@ -336,9 +336,9 @@
             
             z-index: 5;
             
-            /* Performance optimization */
-            contain: layout style paint;
-            will-change: transform, box-shadow;
+            /* CRITICAL FIX: Removed containment to allow title stacking */
+            /* contain: layout style paint; */
+            /* will-change: transform, box-shadow; */
             
             /* SMOOTH RESPONSIVE TRANSITIONS - Prevents jarring resize */
             transition: 
@@ -575,7 +575,7 @@
             display: flex !important;
             justify-content: space-between;
             align-items: baseline;
-            z-index: 20;
+            z-index: 1000; /* CRITICAL FIX: High enough to trump ALL card interactions */
             pointer-events: none;
             min-block-size: 1.8rem;
             background: rgba(10, 10, 10, 0.98);
@@ -1008,13 +1008,13 @@
                 aspect-ratio: 2.2/1; /* Wider aspect ratio for mobile */
                 margin-inline: auto;
                 
-                /* Enhanced mobile performance */
-                contain: layout style paint;
+                /* CRITICAL FIX: Removed mobile containment for title stacking */
+                /* contain: layout style paint; */
             }
             
             .project-card:hover {
                 transform: scale(1.02);
-                z-index: 100;
+                z-index: 10; /* CRITICAL FIX: Lower than titles (z-index: 20/999) */
                 box-shadow: 0 8px 25px rgba(0,0,0,0.25);
             }
             
@@ -1022,7 +1022,7 @@
                 inset-block-start: -1.2rem;
                 padding-inline: 0.6rem;
                 padding-block: 0.3rem;
-                z-index: 20;
+                z-index: 1000; /* CRITICAL FIX: Consistent with base styles */
                 white-space: nowrap;
                 background: rgba(10, 10, 10, 0.95);
                 backdrop-filter: blur(15px);
@@ -1064,8 +1064,8 @@
                 /* CRITICAL: Ensure space for titles above cards */
                 margin-block-start: 2.5rem;
                 
-                /* Performance optimization for smaller devices */
-                contain: layout style paint size;
+                /* CRITICAL FIX: Removed small device containment for title stacking */
+                /* contain: layout style paint size; */
             }
             
             .project-info-external {
@@ -1109,7 +1109,7 @@
             .project-info-external {
                 inset-block-start: -1.1rem;
                 inset-inline: 0;
-                z-index: 999;
+                z-index: 1000; /* CRITICAL FIX: Consistent with base styles */
                 min-block-size: 1.8rem;
                 font-size: 0.75rem;
                 padding-inline: 0.6rem;
@@ -1243,7 +1243,7 @@
                     <span class="project-number">01</span>
                     <span class="project-title">mind.set.play</span>
                 </div>
-                <span class="project-year">2024</span>
+                <span class="project-year">2019</span>
             </div>
             <div class="project-image" style="background: url('../04-ASSETS/assets/Cases/1-mind-set-play/Start.jpg'), linear-gradient(135deg, #8B9DC3 0%, #9EADC8 100%); background-size: cover; background-position: center;"></div>
             <div class="project-description cosmos-variant-unified"><span class="small-text">breaking down</span><span class="capital-text">COMPLEXITY</span></div>
@@ -1266,7 +1266,7 @@
                     <span class="project-number">02</span>
                     <span class="project-title">Gourmet Invader</span>
                 </div>
-                <span class="project-year">2024</span>
+                <span class="project-year">2025</span>
             </div>
             <div class="project-image" style="background: url('../04-ASSETS/assets/Cases/2-Gourmet-Invader/Start.jpg'), linear-gradient(135deg, #C4A5B8 0%, #B8A5B8 100%); background-size: cover; background-position: center;"></div>
             <div class="project-description cosmos-variant-unified"><span class="small-text">agile</span><span class="capital-text">LEADERSHIP</span></div>
@@ -1289,7 +1289,7 @@
                     <span class="project-number">03</span>
                     <span class="project-title">Chess Quest</span>
                 </div>
-                <span class="project-year">2024</span>
+                <span class="project-year">2025</span>
             </div>
             <div class="project-image" style="background: url('../04-ASSETS/assets/Cases/3-Chest-Quest/Start.jpg'), linear-gradient(135deg, #8DB4C4 0%, #A5C4D4 100%); background-size: cover; background-position: center;"></div>
             <div class="project-description cosmos-variant-unified"><span class="small-text">creative</span><span class="capital-text">PROBLEM-SOLVING</span></div>
@@ -1312,7 +1312,7 @@
                     <span class="project-number">04</span>
                     <span class="project-title">Journey</span>
                 </div>
-                <span class="project-year">2024</span>
+                <span class="project-year">2025</span>
             </div>
             <div class="project-image" style="background: url('../04-ASSETS/assets/Cases/4-Journey/Start.jpg'), linear-gradient(135deg, #A5C4A5 0%, #B8D4B8 100%); background-size: cover; background-position: center;"></div>
             <div class="project-description cosmos-variant-unified"><span class="small-text">mapping</span><span class="capital-text">USER-JOURNEY</span></div>
@@ -1356,16 +1356,16 @@
             <div class="project-info-external">
                 <div class="project-left-info">
                     <span class="project-number">06</span>
-                    <span class="project-title">Others & Bio</span>
+                    <span class="project-title">Others</span>
                 </div>
-                <span class="project-year">2025</span>
+                <span class="project-year">2024/2025</span>
             </div>
             <div class="project-image" style="background: url('../04-ASSETS/assets/Cases/6-Others/Start.jpg'), linear-gradient(135deg, #A5C4A5 0%, #B8D4B8 100%); background-size: cover; background-position: center;"></div>
-            <div class="project-description cosmos-variant-unified"><span class="small-text">custom gpts &</span><span class="capital-text">BIOGRAPHY</span></div>
+            <div class="project-description cosmos-variant-unified"><span class="small-text">small projects &</span><span class="capital-text">JULIAN'S PROFILE</span></div>
             
             <!-- HOVER CONTENT -->
             <div class="case-expanded-content">
-                <div class="case-summary">Custom GPTs & Professional Background</div>
+                <div class="case-summary">Small Projects & JULIAN'S PROFILE</div>
                 <div class="case-buttons">
                     <button class="case-btn" onclick="event.stopPropagation(); showProject(6);">Project Info</button>
                     <button class="case-btn" onclick="event.stopPropagation(); showGallery(6);">Gallery</button>
@@ -1739,11 +1739,11 @@
                     ` 
                 },
                 6: {
-                    title: 'Others & Bio',
-                    subtitle: 'Custom GPTs & Professional Background',
+                    title: 'Small Projects & JULIAN\'S PROFILE',
+                    subtitle: 'Small Projects & Professional Background',
                     content: `
                         <div style="margin-block-end: 2rem;">
-                            <h3 style="color: var(--color-accent); margin-block-end: 0.8rem; font-size: 1.1rem;">Custom GPTs Portfolio</h3>
+                            <h3 style="color: var(--color-accent); margin-block-end: 0.8rem; font-size: 1.1rem;">Small Projects Portfolio</h3>
                             <p style="margin-block-end: 0.8rem; line-height: 1.6;"><strong>Specialized AI Assistants:</strong> Development of custom GPTs for specific use cases and workflows</p>
                             <p style="margin-block-end: 0.8rem; line-height: 1.6;"><strong>Innovation Focus:</strong> AI-human collaboration optimization and workflow enhancement</p>
                             <p style="margin-block-end: 1rem; line-height: 1.6;"><strong>Applications:</strong> Learning design, project management, and creative problem-solving</p>
@@ -1793,68 +1793,93 @@
         }
         
         function closeModal() {
+            // V-Rule: Pause all videos when closing gallery for performance
+            pauseAllVideos();
             document.getElementById('modal').classList.remove('active');
         }
         
         // GALLERY AND GITHUB FUNCTIONS
         function showGallery(id) {
+            /* 
+             * V-RULE VIDEO INTEGRATION - USAGE EXAMPLES
+             * 
+             * To add videos to your galleries, simply include video files alongside images:
+             * 
+             * MIXED MEDIA EXAMPLE:
+             * images: [
+             *     { src: 'image1.jpg', description: 'Screenshot of app' },
+             *     { src: 'demo-video.mp4', description: 'App demonstration video' },
+             *     { src: 'image2.png', description: 'Another screenshot' },
+             *     { src: 'tutorial.webm', description: 'Tutorial walkthrough' }
+             * ]
+             * 
+             * SUPPORTED VIDEO FORMATS: .mp4, .webm, .mov, .avi, .mkv, .ogg
+             * 
+             * VIDEO FEATURES:
+             * - Center position: Full video controls (play/pause/volume/fullscreen)
+             * - Side positions: Muted preview with click to navigate
+             * - Keyboard: Spacebar for play/pause, arrows for navigation
+             * - Auto-pause when switching slides or closing gallery
+             * - Professional error handling for unsupported formats
+             * - Mobile-optimized controls with larger touch targets
+             */
             const galleries = {
                 1: {
                     title: 'mind.set.play Gallery',
                     images: [
-                        '../04-ASSETS/assets/Cases/1-mind-set-play/Start.jpg',
-                        '../04-ASSETS/assets/Cases/1-mind-set-play/msp_2.jpg',
-                        '../04-ASSETS/assets/Cases/1-mind-set-play/msp_3.jpg',
-                        '../04-ASSETS/assets/Cases/1-mind-set-play/msp_4.jpg',
-                        '../04-ASSETS/assets/Cases/1-mind-set-play/msp_5.jpg',
-                        '../04-ASSETS/assets/Cases/1-mind-set-play/msp_6.jpg'
+                        { src: '../04-ASSETS/assets/Cases/1-mind-set-play/start.jpg', description: 'Project overview and initial concept design' },
+                        { src: '../04-ASSETS/assets/Cases/1-mind-set-play/01.jpg', description: 'User interface design and interaction patterns' },
+                        { src: '../04-ASSETS/assets/Cases/1-mind-set-play/02.jpg', description: 'Game mechanics and puzzle system design' },
+                        { src: '../04-ASSETS/assets/Cases/1-mind-set-play/03.jpg', description: 'Visual design system and component library' },
+                        { src: '../04-ASSETS/assets/Cases/1-mind-set-play/04.jpg', description: 'Development process and technical implementation' },
+                        { src: '../04-ASSETS/assets/Cases/1-mind-set-play/05.jpg', description: 'Final implementation and user testing results' }
                     ]
                 },
                 2: {
                     title: 'Gourmet Invader Gallery',
                     images: [
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/Start.jpg',
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/Characters.jpg',
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/GameIntro2.jpg',
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/GamePlay1.jpg',
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/GamePlay2.jpg',
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/IntroAnimation1.jpg',
-                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/WebGameCard.jpg'
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/start.jpg',
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/01.jpg',
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/02.jpg',
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/03.jpg',
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/04.jpg',
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/05.jpg',
+                        '../04-ASSETS/assets/Cases/2-Gourmet-Invader/06.jpg'
                     ]
                 },
                 3: {
                     title: 'Chess Quest Gallery',
                     images: [
-                        '../04-ASSETS/assets/Cases/3-Chest-Quest/Start.jpg',
-                        '../04-ASSETS/assets/Cases/3-Chest-Quest/Inventory.jpg',
-                        '../04-ASSETS/assets/Cases/3-Chest-Quest/Level1_0.jpg',
-                        '../04-ASSETS/assets/Cases/3-Chest-Quest/Level1_1.jpg',
-                        '../04-ASSETS/assets/Cases/3-Chest-Quest/Level1_2.jpg',
-                        '../04-ASSETS/assets/Cases/3-Chest-Quest/Level1_3.jpg'
+                        '../04-ASSETS/assets/Cases/3-Chest-Quest/start.jpg',
+                        '../04-ASSETS/assets/Cases/3-Chest-Quest/01.jpg',
+                        '../04-ASSETS/assets/Cases/3-Chest-Quest/02.jpg',
+                        '../04-ASSETS/assets/Cases/3-Chest-Quest/03.jpg',
+                        '../04-ASSETS/assets/Cases/3-Chest-Quest/04.jpg',
+                        '../04-ASSETS/assets/Cases/3-Chest-Quest/05.jpg'
                     ]
                 },
                 4: {
                     title: 'Journey Gallery',
                     images: [
-                        '../04-ASSETS/assets/Cases/4-Journey/Start.jpg',
-                        '../04-ASSETS/assets/Cases/4-Journey/GameIntro.jpg',
-                        '../04-ASSETS/assets/Cases/4-Journey/PlayerFPV_Panorama.jpg',
-                        '../04-ASSETS/assets/Cases/4-Journey/PanoramaLevel.jpg',
-                        '../04-ASSETS/assets/Cases/4-Journey/PlayerCharacter_Dino.jpg',
-                        '../04-ASSETS/assets/Cases/4-Journey/Snow.jpg',
-                        '../04-ASSETS/assets/Cases/4-Journey/TheEnd.jpg'
+                        '../04-ASSETS/assets/Cases/4-Journey/start.jpg',
+                        '../04-ASSETS/assets/Cases/4-Journey/01.jpg',
+                        '../04-ASSETS/assets/Cases/4-Journey/02.jpg',
+                        '../04-ASSETS/assets/Cases/4-Journey/03.jpg',
+                        '../04-ASSETS/assets/Cases/4-Journey/04.jpg',
+                        '../04-ASSETS/assets/Cases/4-Journey/05.jpg',
+                        '../04-ASSETS/assets/Cases/4-Journey/06.jpg'
                     ]
                 },
                 5: {
                     title: 'Portfolio Website Gallery',
                     images: [
-                        '../04-ASSETS/assets/Cases/5-Portfolio-Website/Start.jpg'
+                        '../04-ASSETS/assets/Cases/5-Portfolio-Website/start.jpg'
                     ]
                 },
                 6: {
-                    title: 'Others & Bio Gallery',
+                    title: 'Small Projects & JULIAN\'S PROFILE Gallery',
                     images: [
-                        '../04-ASSETS/assets/Cases/6-Others/Start.JPG'
+                        '../04-ASSETS/assets/Cases/6-Others/start.jpg'
                     ]
                 }
             };
@@ -1862,22 +1887,32 @@
             const gallery = galleries[id];
             if (!gallery) return;
             
+            // Sort images chronologically by array index (preserve original order)
+            const sortedImages = gallery.images.map((img, originalIndex) => {
+                // Handle both string and object formats for backward compatibility
+                if (typeof img === 'string') {
+                    return { src: img, description: '', originalIndex };
+                }
+                return { src: img.src, description: img.description || '', originalIndex };
+            }).sort((a, b) => a.originalIndex - b.originalIndex);
+            
             document.getElementById('modalBody').innerHTML = `
                 <h2 style="color: var(--color-accent); margin-block-end: 2rem;">${gallery.title}</h2>
                 <div class="gallery-container">
                     <div class="carousel-wrapper">
-                        <div class="carousel-track" id="carouselTrack">
-                            ${gallery.images.map((img, index) => `
-                                <div class="carousel-slide">
-                                    <img src="${img}" alt="Gallery image ${index + 1}" class="gallery-image" loading="lazy">
-                                </div>
-                            `).join('')}
+                        <div class="carousel-viewport" id="carouselViewport">
+                            <div class="carousel-three-view" id="carouselThreeView">
+                                <!-- Dynamic three-image view will be populated by JavaScript -->
+                            </div>
                         </div>
-                        <button class="carousel-btn carousel-prev" id="prevBtn" onclick="moveCarousel(-1)">‹</button>
-                        <button class="carousel-btn carousel-next" id="nextBtn" onclick="moveCarousel(1)">›</button>
+                        <button class="carousel-btn carousel-prev" id="prevBtn" onclick="moveCarousel(-1)" ${gallery.images.length <= 1 ? 'style="display: none;"' : ''}>‹</button>
+                        <button class="carousel-btn carousel-next" id="nextBtn" onclick="moveCarousel(1)" ${gallery.images.length <= 1 ? 'style="display: none;"' : ''}>›</button>
                     </div>
-                    <div class="carousel-indicators" id="carouselIndicators">
-                        ${gallery.images.map((_, index) => `
+                    <div class="carousel-description" id="carouselDescription">
+                        <p class="description-text" id="descriptionText"></p>
+                    </div>
+                    <div class="carousel-indicators" id="carouselIndicators" ${gallery.images.length <= 1 ? 'style="display: none;"' : ''}>
+                        ${sortedImages.map((_, index) => `
                             <button class="indicator ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></button>
                         `).join('')}
                     </div>
@@ -1885,37 +1920,170 @@
                 
                 <style>
                     .gallery-container {
-                        max-width: 800px;
+                        max-width: 1000px;
                         margin: 0 auto;
                         position: relative;
                     }
                     
                     .carousel-wrapper {
                         position: relative;
-                        overflow: hidden;
                         border-radius: 12px;
                         background: rgba(0,0,0,0.2);
+                        overflow: hidden;
+                        /* Fixed dimensions for consistency */
+                        width: 100%;
+                        min-height: 450px;
+                        height: 450px;
                     }
                     
-                    .carousel-track {
+                    .carousel-viewport {
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
                         display: flex;
-                        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                    }
-                    
-                    .carousel-slide {
-                        min-width: 100%;
-                        display: flex;
-                        justify-content: center;
                         align-items: center;
+                        justify-content: center;
                         padding: 1rem;
+                        /* Ensure fixed positioning */
+                        position: relative;
+                    }
+                    
+                    .carousel-three-view {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 1rem;
+                        width: 100%;
+                        height: 100%;
+                        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                        /* Fixed positioning for consistency */
+                        position: relative;
+                    }
+                    
+                    /* V-RULE IMPLEMENTATION: CAROUSEL FULL IMAGE DISPLAY
+                     * Vollständigkeit: Complete image visibility without cropping
+                     * Verknüpfung: Integrated with existing carousel structure
+                     * Verlässlichkeit: Consistent behavior for all image sizes
+                     * Verständlichkeit: Clear black background for professional display
+                     * Verantwortung: Maintains aspect ratios and responsive behavior
+                     */
+                    .carousel-image-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                        /* Consistent rounded borders */
+                        border-radius: 12px;
+                        overflow: hidden;
+                        /* Fixed positioning for consistency */
+                        position: relative;
+                        /* V-Rule: Black background for full image display */
+                        background-color: #000000;
+                    }
+                    
+                    .carousel-image-container.center {
+                        flex: 0 0 50%;
+                        height: 100%;
+                        z-index: 3;
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+                    }
+                    
+                    .carousel-image-container.side {
+                        flex: 0 0 30%;
+                        height: 75%;
+                        opacity: 0.7;
+                        z-index: 1;
+                        box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .carousel-image-container.side:hover {
+                        opacity: 0.9;
+                        transform: scale(1.02);
                     }
                     
                     .gallery-image {
-                        max-width: 100%;
-                        max-height: 400px;
+                        width: 100%;
+                        height: 100%;
+                        /* V-Rule: Full image display without cropping */
                         object-fit: contain;
-                        border-radius: 8px;
-                        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                        /* Consistent rounded borders for all images */
+                        border-radius: 12px;
+                        /* Ensure consistent image rendering */
+                        image-rendering: -webkit-optimize-contrast;
+                        image-rendering: crisp-edges;
+                        /* V-Rule: Maintain aspect ratio and center positioning */
+                    }
+                    
+                    /* V-Rule: Video Integration - Professional video styling */
+                    .gallery-video {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                        border-radius: 12px;
+                        background-color: #000000;
+                        /* Smooth video transitions */
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .center-video {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    
+                    .side-video {
+                        opacity: 0.7;
+                        cursor: pointer;
+                        /* Muted preview styling */
+                        filter: brightness(0.8);
+                    }
+                    
+                    .side-video:hover {
+                        opacity: 0.9;
+                        filter: brightness(1);
+                    }
+                    
+                    /* Video controls styling for better UX */
+                    .gallery-video::-webkit-media-controls-panel {
+                        background-color: rgba(0, 0, 0, 0.8);
+                    }
+                    
+                    .gallery-video::-webkit-media-controls {
+                        border-radius: 0 0 12px 12px;
+                    }
+                    
+                    /* Fullscreen video support */
+                    .gallery-video:-webkit-full-screen {
+                        width: 100vw;
+                        height: 100vh;
+                        object-fit: contain;
+                    }
+                    
+                    .gallery-video:-moz-full-screen {
+                        width: 100vw;
+                        height: 100vh;
+                        object-fit: contain;
+                    }
+                    
+                    .gallery-video:fullscreen {
+                        width: 100vw;
+                        height: 100vh;
+                        object-fit: contain;
+                        max-width: 100%;
+                        max-height: 100%;
+                    }
+                    
+                    /* Single image display */
+                    .carousel-image-container.single {
+                        flex: 0 0 70%;
+                        height: 90%;
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+                    }
+                    
+                    /* V-Rule: Enhanced single image display - redundant but ensures consistency */
+                    .carousel-image-container.single .gallery-image {
+                        object-fit: contain;
                     }
                     
                     .carousel-btn {
@@ -1935,6 +2103,8 @@
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        /* Fixed positioning - never moves */
+                        will-change: transform;
                     }
                     
                     .carousel-btn:hover {
@@ -1942,8 +2112,44 @@
                         transform: translateY(-50%) scale(1.1);
                     }
                     
-                    .carousel-prev { left: 10px; }
-                    .carousel-next { right: 10px; }
+                    .carousel-prev { 
+                        left: 10px;
+                        /* Ensure fixed position relative to wrapper */
+                        position: absolute;
+                    }
+                    .carousel-next { 
+                        right: 10px;
+                        /* Ensure fixed position relative to wrapper */
+                        position: absolute;
+                    }
+                    
+                    /* Description area with conditional display */
+                    .carousel-description {
+                        min-height: 60px;
+                        max-height: 120px;
+                        padding: 1rem 0;
+                        text-align: center;
+                        transition: all 0.3s ease;
+                        overflow: hidden;
+                    }
+                    
+                    .carousel-description.hidden {
+                        min-height: 0;
+                        max-height: 0;
+                        padding: 0;
+                        opacity: 0;
+                    }
+                    
+                    .description-text {
+                        color: var(--color-text-secondary, #666);
+                        font-size: 0.95rem;
+                        line-height: 1.5;
+                        margin: 0;
+                        opacity: 1;
+                        transition: opacity 0.3s ease;
+                        max-width: 800px;
+                        margin: 0 auto;
+                    }
                     
                     .carousel-indicators {
                         display: flex;
@@ -1968,8 +2174,32 @@
                     }
                     
                     @media screen and (max-width: 768px) {
-                        .gallery-image {
-                            max-height: 300px;
+                        .carousel-wrapper {
+                            min-height: 350px;
+                            height: 350px;
+                        }
+                        
+                        .carousel-viewport {
+                            height: 100%;
+                            padding: 0.5rem;
+                        }
+                        
+                        .carousel-three-view {
+                            gap: 0.5rem;
+                        }
+                        
+                        .carousel-image-container.center {
+                            flex: 0 0 60%;
+                        }
+                        
+                        .carousel-image-container.side {
+                            flex: 0 0 25%;
+                            height: 70%;
+                        }
+                        
+                        .carousel-image-container.single {
+                            flex: 0 0 85%;
+                            height: 85%;
                         }
                         
                         .carousel-btn {
@@ -1977,13 +2207,79 @@
                             height: 35px;
                             font-size: 1.2rem;
                         }
+                        
+                        .carousel-description {
+                            min-height: 50px;
+                            max-height: 100px;
+                            padding: 0.75rem 0;
+                        }
+                        
+                        .description-text {
+                            font-size: 0.9rem;
+                        }
+                    }
+                    
+                    @media screen and (max-width: 480px) {
+                        .carousel-wrapper {
+                            min-height: 280px;
+                            height: 280px;
+                        }
+                        
+                        .carousel-viewport {
+                            height: 100%;
+                        }
+                        
+                        /* V-Rule: Enhanced mobile video controls */
+                        .gallery-video {
+                            /* Larger touch targets for mobile */
+                            min-height: 200px;
+                        }
+                        
+                        .gallery-video::-webkit-media-controls-play-button {
+                            /* Larger play button for mobile */
+                            transform: scale(1.2);
+                        }
+                        
+                        .gallery-video::-webkit-media-controls-panel {
+                            /* Enhanced mobile control panel */
+                            height: 40px;
+                            background-color: rgba(0, 0, 0, 0.9);
+                        }
+                        
+                        .carousel-image-container.center {
+                            flex: 0 0 70%;
+                        }
+                        
+                        .carousel-image-container.side {
+                            flex: 0 0 20%;
+                            height: 65%;
+                        }
+                        
+                        .carousel-three-view {
+                            gap: 0.25rem;
+                        }
+                        
+                        .carousel-description {
+                            min-height: 40px;
+                            max-height: 80px;
+                            padding: 0.5rem 0;
+                        }
+                        
+                        .description-text {
+                            font-size: 0.85rem;
+                        }
                     }
                 </style>
             `;
             
-            // Initialize carousel
+            // Initialize enhanced carousel with chronological ordering
             window.currentSlide = 0;
-            window.totalSlides = gallery.images.length;
+            window.totalSlides = sortedImages.length;
+            window.galleryImages = sortedImages;
+            
+            // Render initial three-image view
+            renderThreeImageView();
+            updateDescription();
             
             document.getElementById('modal').classList.add('active');
         }
@@ -1991,27 +2287,186 @@
         function moveCarousel(direction) {
             if (!window.totalSlides) return;
             
+            // V-Rule: Pause all videos before navigation for better UX
+            pauseAllVideos();
+            
             window.currentSlide = (window.currentSlide + direction + window.totalSlides) % window.totalSlides;
             updateCarousel();
         }
         
         function goToSlide(slideIndex) {
+            // V-Rule: Pause all videos before direct navigation
+            pauseAllVideos();
+            
             window.currentSlide = slideIndex;
             updateCarousel();
         }
         
         function updateCarousel() {
-            const track = document.getElementById('carouselTrack');
-            const indicators = document.querySelectorAll('.indicator');
+            renderThreeImageView();
+            updateIndicators();
+            updateDescription();
+        }
+        
+        /*
+         * V-RULE VIDEO INTEGRATION - IMPLEMENTATION COMPLETE
+         * 
+         * FEATURES IMPLEMENTED:
+         * ✓ Auto-detection: Video files by extension (.mp4, .webm, .mov, .avi, .mkv, .ogg)
+         * ✓ Mixed Media: Images and videos in same gallery
+         * ✓ Professional Controls: Full controls for center, muted preview for sides
+         * ✓ Responsive Design: Video scaling with object-fit: contain
+         * ✓ Performance: Metadata preload, memory management, error handling
+         * ✓ Keyboard Support: Spacebar for play/pause, arrows for navigation
+         * ✓ Mobile Optimization: Enhanced touch controls, larger buttons
+         * ✓ Video Management: Auto-pause on navigation and modal close
+         * 
+         * USAGE: Add video files to gallery.images array alongside images
+         * EXAMPLE: { src: 'path/to/video.mp4', description: 'My video' }
+         */
+        
+        // V-Rule Video Integration: Auto-detection and mixed media support
+        function isVideoFile(src) {
+            const videoExtensions = ['.mp4', '.webm', '.mov', '.avi', '.mkv', '.ogg'];
+            return videoExtensions.some(ext => src.toLowerCase().includes(ext));
+        }
+        
+        function createMediaElement(src, description, isCenter = false, isPreview = false) {
+            const isVideo = isVideoFile(src);
             
-            if (track) {
-                track.style.transform = `translateX(-${window.currentSlide * 100}%)`;
+            if (isVideo) {
+                return `
+                    <video 
+                        ${isCenter ? 'controls' : 'muted'} 
+                        ${isCenter && !isPreview ? 'autoplay' : ''} 
+                        preload="metadata"
+                        class="gallery-video ${isCenter ? 'center-video' : 'side-video'}"
+                        style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px; background-color: #000000;"
+                        ${isPreview ? 'loop' : ''}
+                        onloadedmetadata="this.currentTime = 1"
+                    >
+                        <source src="${src}" type="video/mp4">
+                        <source src="${src}" type="video/webm">
+                        <p style="color: white; text-align: center; padding: 20px;">Your browser doesn't support video playback.</p>
+                    </video>
+                `;
+            } else {
+                return `
+                    <img src="${src}" alt="${description || 'Gallery image'}" class="gallery-image" loading="lazy">
+                `;
+            }
+        }
+        
+        function pauseAllVideos() {
+            const videos = document.querySelectorAll('.gallery-video');
+            videos.forEach(video => {
+                if (!video.paused) {
+                    video.pause();
+                }
+            });
+        }
+        
+        // V-Rule: Performance optimization for video memory management
+        function optimizeVideoPerformance() {
+            const videos = document.querySelectorAll('.gallery-video');
+            videos.forEach((video, index) => {
+                // Preload only metadata for side videos to save bandwidth
+                if (video.closest('.carousel-image-container.side')) {
+                    video.preload = 'metadata';
+                    video.muted = true;
+                } else if (video.closest('.carousel-image-container.center')) {
+                    video.preload = 'auto';
+                }
+                
+                // Error handling for unsupported formats
+                video.addEventListener('error', function() {
+                    const container = this.parentElement;
+                    container.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white; text-align: center; padding: 20px; background-color: #000;">
+                            <p>Video format not supported<br><small>Please try MP4, WebM, or MOV format</small></p>
+                        </div>
+                    `;
+                });
+            });
+        }
+        
+        function renderThreeImageView() {
+            const viewport = document.getElementById('carouselThreeView');
+            if (!viewport || !window.galleryImages) return;
+            
+            // Pause all videos before switching
+            pauseAllVideos();
+            
+            const totalImages = window.galleryImages.length;
+            
+            // Handle single media case
+            if (totalImages === 1) {
+                const mediaElement = createMediaElement(window.galleryImages[0].src, window.galleryImages[0].description, true);
+                viewport.innerHTML = `
+                    <div class="carousel-image-container single">
+                        ${mediaElement}
+                    </div>
+                `;
+                // V-Rule: Apply performance optimizations after rendering
+                setTimeout(optimizeVideoPerformance, 100);
+                return;
             }
             
+            // Calculate previous, current, and next indices
+            const prevIndex = (window.currentSlide - 1 + totalImages) % totalImages;
+            const currentIndex = window.currentSlide;
+            const nextIndex = (window.currentSlide + 1) % totalImages;
+            
+            // Create three-media layout with mixed content support
+            const prevMedia = createMediaElement(window.galleryImages[prevIndex].src, window.galleryImages[prevIndex].description, false, true);
+            const currentMedia = createMediaElement(window.galleryImages[currentIndex].src, window.galleryImages[currentIndex].description, true);
+            const nextMedia = createMediaElement(window.galleryImages[nextIndex].src, window.galleryImages[nextIndex].description, false, true);
+            
+            viewport.innerHTML = `
+                <div class="carousel-image-container side" onclick="moveCarousel(-1)" data-index="${prevIndex}">
+                    ${prevMedia}
+                </div>
+                <div class="carousel-image-container center" data-index="${currentIndex}">
+                    ${currentMedia}
+                </div>
+                <div class="carousel-image-container side" onclick="moveCarousel(1)" data-index="${nextIndex}">
+                    ${nextMedia}
+                </div>
+            `;
+            
+            // V-Rule: Apply performance optimizations after rendering
+            setTimeout(optimizeVideoPerformance, 100);
+        }
+        
+        function updateDescription() {
+            const descriptionContainer = document.getElementById('carouselDescription');
+            const descriptionText = document.getElementById('descriptionText');
+            
+            if (!descriptionContainer || !descriptionText || !window.galleryImages) return;
+            
+            const currentImage = window.galleryImages[window.currentSlide];
+            const description = currentImage.description;
+            
+            if (description && description.trim()) {
+                // Show description with smooth transition
+                descriptionText.textContent = description;
+                descriptionContainer.classList.remove('hidden');
+            } else {
+                // Hide description area
+                descriptionContainer.classList.add('hidden');
+                descriptionText.textContent = '';
+            }
+        }
+        
+        function updateIndicators() {
+            const indicators = document.querySelectorAll('.indicator');
             indicators.forEach((indicator, index) => {
                 indicator.classList.toggle('active', index === window.currentSlide);
             });
         }
+        
+        // Global function to ensure three-image view is accessible
+        window.renderThreeImageView = renderThreeImageView;
         
         function showGithub(id) {
             const githubUrls = {
@@ -2019,7 +2474,7 @@
                 3: '#', // Placeholder for Chess Quest GitHub  
                 4: '#', // Placeholder for Journey GitHub
                 5: '#', // Placeholder for This Website GitHub
-                6: '#'  // Placeholder for Others & Bio GitHub
+                6: '#'  // Placeholder for Small Projects & Profile GitHub
             };
             
             if (githubUrls[id] && githubUrls[id] !== '#') {
@@ -2033,8 +2488,33 @@
             }
         }
         
+        // Enhanced keyboard navigation with video controls
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
+            
+            // Navigation and video controls when modal is active
+            if (document.getElementById('modal').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    moveCarousel(-1);
+                }
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    moveCarousel(1);
+                }
+                // V-Rule: Spacebar for video play/pause control
+                if (e.key === ' ' || e.key === 'Spacebar') {
+                    e.preventDefault();
+                    const centerVideo = document.querySelector('.carousel-image-container.center video');
+                    if (centerVideo) {
+                        if (centerVideo.paused) {
+                            centerVideo.play();
+                        } else {
+                            centerVideo.pause();
+                        }
+                    }
+                }
+            }
         });
         
         document.getElementById('modal').addEventListener('click', function(e) {
