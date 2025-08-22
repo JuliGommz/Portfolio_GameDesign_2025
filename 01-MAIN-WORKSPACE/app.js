@@ -75,20 +75,82 @@ class PortfolioApp {
     }
     
     setupGlobalHandlers() {
-        // Make showProject and closeModal globally accessible for inline onclick handlers
-        window.showProject = (id) => this.modalSystem.showProject(id);
-        window.closeModal = () => this.modalSystem.closeModal();
-        window.showContactForm = () => this.modalSystem.showContactForm();
+        // Setup data attribute handlers for clean HTML
+        this.setupDataAttributeHandlers();
         
         // Setup email handler
         this.setupEmailHandler();
     }
     
+    setupDataAttributeHandlers() {
+        // Handle project card buttons with data attributes
+        const caseButtons = document.querySelectorAll('[data-project-id]');
+        caseButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const projectId = button.getAttribute('data-project-id');
+                const action = button.getAttribute('data-action');
+                const url = button.getAttribute('data-url');
+                
+                switch(action) {
+                    case 'info':
+                        this.modalSystem.showProject(projectId);
+                        break;
+                    case 'gallery':
+                        this.modalSystem.showGallery(projectId);
+                        break;
+                    case 'external':
+                        if (url && url !== '#') {
+                            window.open(url, '_blank');
+                        }
+                        break;
+                    case 'github':
+                        // GitHub functionality would be implemented here
+                        console.log(`Show GitHub for project ${projectId}`);
+                        break;
+                    case 'contact':
+                        this.modalSystem.showContactForm();
+                        break;
+                }
+            });
+        });
+        
+        // Handle social links
+        const socialLinks = document.querySelectorAll('[data-social]');
+        socialLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const url = link.getAttribute('data-url');
+                if (url && url !== '#') {
+                    window.open(url, '_blank');
+                }
+            });
+        });
+        
+        // Handle contact links
+        const contactLinks = document.querySelectorAll('[data-action="contact"]');
+        contactLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                this.modalSystem.showContactForm();
+            });
+        });
+        
+        // Handle modal close
+        const modalClose = document.querySelector('.modal-close');
+        if (modalClose) {
+            modalClose.addEventListener('click', () => {
+                this.modalSystem.closeModal();
+            });
+        }
+    }
+    
     setupEmailHandler() {
-        const emailElements = document.querySelectorAll('[onmouseover*="Write Email"]');
+        const emailElements = document.querySelectorAll('[data-email]');
         emailElements.forEach(element => {
             element.addEventListener('click', () => {
-                window.location.href = 'mailto:juliangomez@gmx.de';
+                const email = element.getAttribute('data-email');
+                if (email) {
+                    window.location.href = `mailto:${email}`;
+                }
             });
         });
     }
